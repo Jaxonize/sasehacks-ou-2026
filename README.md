@@ -4,7 +4,7 @@
 
 Tactile Reminders is a desk switchboard concept and a working mobile web app, built for **OU SASEHacks 2026 — SASEHACKS FOR GOOD**. It gives a few important tasks a fixed place and makes completion visible, tangible and encouraging.
 
-[Try the live demo](https://clever-puffpuff-2265f2.netlify.app) · [Run locally](#getting-started) · [Google Tasks setup](#google-tasks-optional) · [Presentation guide](coordination/demo/JUDGING_PACKAGE.md)
+[Try the live demo](https://clever-puffpuff-2265f2.netlify.app) · [Run locally](#getting-started) · [Google Tasks setup](#google-tasks-optional)
 
 ## The idea
 
