@@ -20,7 +20,7 @@ We are exploring tactile routines for people who find conventional reminders dif
 - See a roaming pixel-art cat and brief completion feedback, including confetti. The cat can be hidden; animations respect reduced-motion settings.
 - Import incomplete **Google Tasks due today** into explicitly selected empty slots after configuring Google sign-in.
 
-The printed switches and dials are **mechanical demo props**. They do not send electronic signals to the app. During the demonstration, we openly mirror a physical action using its on-screen control. The current on-screen controls toggle Complete/Undo; the core command intended for future hardware only completes its assigned task and repeated activation is a no-op.
+The printed switches and dials are **mechanical demo props**. They do not send electronic signals to the app. During the demonstration, we openly mirror a physical action using its on-screen control. The completion circles toggle Complete/Undo; simulated switches respond to horizontal swipes (right completes, left undoes), while keyboard users can use the completion and Undo buttons; the core command intended for future hardware only completes its assigned task and repeated activation is a no-op.
 
 | Reminder slot | Physical control |
 |---|---|
@@ -43,8 +43,8 @@ npm run dev -- --port 5173
 Open **http://localhost:5173/**. To try the phone layout, open the network URL printed by Vite on a phone connected to the same Wi-Fi.
 
 1. Add a short task to an empty row.
-2. Tap its completion circle or simulated control.
-3. Use Undo or tap the completed control again to reopen it.
+2. Tap its completion circle or swipe its simulated switch right.
+3. Use Undo, tap the completion circle again, or swipe the switch left to reopen it.
 4. Edit a task, then reload to see local saving.
 
 For Google import, leave a slot empty and scroll below the board to the import launcher.
@@ -78,7 +78,7 @@ Import does not overwrite occupied slots or import the same Google task twice. C
 
 React, TypeScript and Vite power the web app. Reminder state and storage live in `src/core`, the interface in `src/ui`, Google import in `src/integrations/google`, and the cat companion in `src/companion`. JetBrains Mono is bundled locally. Cat artwork provenance is in [assets/companion/README.md](assets/companion/README.md).
 
-There is no backend or cross-device synchronization. Each browser/device/origin has its own reminders: importing on laptop localhost does not populate the phone. Simultaneous localStorage writes are not transactional. Connected hardware and Braille output are not implemented; actual phone and screen-reader testing remain separate acceptance work.
+There is no backend or cross-device synchronization. Each browser/device/origin has its own reminders: importing on laptop localhost does not populate the phone. Simultaneous localStorage writes are not transactional. Connected hardware and tactile Braille output are not implemented; V30 offers a visual Unicode Braille display toggle (not a certified Braille translator); actual phone and screen-reader testing remain separate acceptance work.
 
 ## Event and team notes
 
@@ -89,3 +89,5 @@ Submit the repository link through [OU SASEHacks Devpost](https://ou-sasehacks.d
 **Final submission is on hold until Jaxon explicitly authorizes it.** Commit, push and deployment permissions are separate.
 
 Contributors and coding agents: read [AGENTS.md](AGENTS.md), [TEAM_COORDINATION.md](TEAM_COORDINATION.md), [HANDOFF.md](HANDOFF.md) and the newest [coordination updates](coordination/updates/) before editing. Coordinate ownership, preserve uncommitted work, and keep credentials out of Git.
+
+V30 adds saved urgency, red pending-card glow, urgency-specific confetti, a draggable cat, and a Braille/English display toggle. New editor saves require at most 60 characters; older and Google-imported titles up to 200 are preserved and must be explicitly shortened when edited.

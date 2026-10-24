@@ -23,8 +23,8 @@ export function useReminders(): ReminderViewProps & { onImportGoogle: (slotId: S
 
   return {
     ...snapshot,
-    onAdd: (slotId, title) => controller.dispatch({ type: 'add', slotId, title, id: globalThis.crypto?.randomUUID?.() ?? `reminder-${Date.now()}-${Math.random().toString(36).slice(2)}` }),
-    onEdit: (slotId, title) => controller.dispatch({ type: 'edit', slotId, title }),
+    onAdd: (slotId, title, urgent) => controller.dispatch({ type: 'add', slotId, title, urgent, id: globalThis.crypto?.randomUUID?.() ?? `reminder-${Date.now()}-${Math.random().toString(36).slice(2)}` }),
+    onEdit: (slotId, title, urgent) => controller.dispatch({ type: 'edit', slotId, title, urgent }),
     onImportGoogle: (slotId, title, source) => controller.dispatch({ type: 'importGoogle', slotId, title, source, id: globalThis.crypto?.randomUUID?.() ?? `reminder-${Date.now()}-${Math.random().toString(36).slice(2)}` }),
     onComplete: slotId => { controller.dispatch({ type: 'complete', slotId }); },
     onUndo: slotId => { controller.dispatch({ type: 'undo', slotId }); },

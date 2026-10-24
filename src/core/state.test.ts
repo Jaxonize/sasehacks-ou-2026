@@ -67,3 +67,22 @@ test('storage read/write failures are surfaced to the controller', () => {
   assert.throws(() => loadSlots(denied), /denied/);
   assert.throws(() => saveSlots(denied, createEmptySlots()), /quota/);
 });
+
+test('urgency persists through edits, completion, undo and reload without changing legacy saves', () => {
+  let raw: string | null = null;
+  const storage = { getItem: () => raw, setItem: (_key: string, value: string) => { raw = value; } };
+  let slots = applyAction(createEmptySlots(), { type: 'add', slotId: 1, id: 'urgent', title: 'Call', urgent: true });
+  slots = applyAction(slots, { type: 'complete', slotId: 1 });
+  saveSlots(storage, slots);
+  slots = loadSlots(storage);
+  assert.equal(slots[0].reminder?.urgent, true);
+  slots = applyAction(slots, { type: 'undo', slotId: 1 });
+  slots = applyAction(slots, { type: 'edit', slotId: 1, title: 'Call', urgent: false });
+  saveSlots(storage, slots);
+  assert.equal(loadSlots(storage)[0].reminder?.urgent, false);
+  slots = applyAction(slots, { type: 'add', slotId: 2, id: 'legacy', title: 'x'.repeat(200) });
+  saveSlots(storage, slots);
+  assert.equal(loadSlots(storage)[1].reminder?.title.length, 200);
+  const invalid = JSON.parse(raw!); invalid.slots[0].reminder.urgent = 'yes'; raw = JSON.stringify(invalid);
+  assert.throws(() => loadSlots(storage), /urgency/);
+});

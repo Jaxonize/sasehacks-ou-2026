@@ -13,9 +13,9 @@ export function createEmptySlots(): ReminderSlot[] {
 }
 
 export type ReminderAction =
-  | { type: 'add'; slotId: SlotId; title: string; id: string }
+  | { type: 'add'; slotId: SlotId; title: string; id: string; urgent?: boolean }
   | { type: 'importGoogle'; slotId: SlotId; title: string; id: string; source: GoogleTaskSource }
-  | { type: 'edit'; slotId: SlotId; title: string }
+  | { type: 'edit'; slotId: SlotId; title: string; urgent?: boolean }
   | { type: 'complete' | 'undo' | 'activateControl'; slotId: SlotId };
 
 export function validateTitle(title: string): string | null {
@@ -41,16 +41,16 @@ export function applyAction(slots: ReminderSlot[], action: ReminderAction): Remi
       if (slot.reminder) throw new Error('This slot already has a reminder. Edit it instead.');
       if (!action.id || slots.some((item) => item.reminder?.id === action.id)) throw new Error('Reminder ID must be unique.');
       changed = true;
-      return { ...slot, reminder: { id: action.id, title: action.title.trim(), completed: false, ...(action.type === 'importGoogle' ? { source: copyGoogleTaskSource(action.source) } : {}) } };
+      return { ...slot, reminder: { id: action.id, title: action.title.trim(), completed: false, ...(action.type === 'add' && action.urgent !== undefined ? { urgent: action.urgent } : {}), ...(action.type === 'importGoogle' ? { source: copyGoogleTaskSource(action.source) } : {}) } };
     }
     if (!slot.reminder) {
       if (action.type === 'edit') throw new Error('This reminder is no longer in this slot. Your draft has not been saved.');
       return slot;
     }
     const reminder = action.type === 'edit'
-      ? { ...slot.reminder, title: action.title.trim() }
+      ? { ...slot.reminder, title: action.title.trim(), ...(action.urgent !== undefined ? { urgent: action.urgent } : {}) }
       : { ...slot.reminder, completed: action.type !== 'undo' };
-    if (reminder.title === slot.reminder.title && reminder.completed === slot.reminder.completed) return slot;
+    if (reminder.title === slot.reminder.title && reminder.completed === slot.reminder.completed && reminder.urgent === slot.reminder.urgent) return slot;
     changed = true;
     return { ...slot, reminder };
   });

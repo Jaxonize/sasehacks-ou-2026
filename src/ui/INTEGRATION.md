@@ -1,84 +1,8 @@
-# Current V22 integration — October 24, 2026
+# Integrated V30 — October 24, 2026
 
-Ivan explicitly authorized V22 integration and push. Source archive SHA256:
-3e8786a4e376ba441f5542979c7c83148498bec843e25a5321a9a406530c0607.
-ReminderApp.tsx and reminders.css match Yosh's V22 candidate. The app retains
-locally bundled JetBrains Mono, boolean | void callback compatibility, 44px
-Hide/Show and pointer-transparent artwork. Cat size is 170px with five randomized
-waypoints, pauses and stationary turns. Completion clicks create 26 blue/black/
-white confetti pieces; Undo creates none; pieces clean up after 1250ms. Reduced
-motion CSS disables cat and confetti animations. Core, Google and companion
-sources remain unchanged. Earlier summaries below are historical.
+The handoff below describes Yosh’s candidate. Integration now persists optional urgency through add/edit, completion, Undo and reload, preserving v1 saves and Google provenance. The 60-character editor limit never truncates existing titles: rejected saves keep the draft and explain shortening; Cancel preserves the original. Core/import compatibility remains 200 characters. The board uses available width rather than a height-derived width to avoid squeezed text. JetBrains Mono remains bundled. Keyboard completion is available through the separate completion/Undo buttons; switch tap remains a no-op. Braille is a visual character mapping, not certified transcription or tactile output.
 
----
-# Accepted V21 integration — October 24, 2026
-
-Ivan selected V21 and explicitly requested fixes followed by a Git push.
-V21 restores full-height cards and a 68px cat roaming on randomized waypoints.
-Integrated repairs retain boolean | void callbacks, a 44px Hide/Show target,
-pointer-transparent cat artwork, and celebration feedback that preserves roaming.
-Reduced-motion CSS disables both animations. UI controls toggle Complete/Undo;
-core hardware activation remains idempotent completion-only. Core, Google and
-companion component sources are unchanged. Google OAuth remains unconfigured.
-Source archive SHA256: b6cbe57720abdca89a3758dcc17b9534683fbaa19a714fee401b54c690168602.
-Earlier sections below are historical and superseded by this summary.
-
----
-# Current integrated contract — V19, October 24, 2026
-
-V19 is integrated on the verified V18 + Google Tasks + cat checkpoint. Ivan
-explicitly authorized integration. Both the completion circle and the on-screen
-simulated control toggle Complete/Undo. Core onActivateControl remains an
-idempotent completion-only command. Slots remain Dial 1, Dial 2, Switch 1,
-Switch 2. Add/edit callbacks retain boolean | void; false preserves the draft
-and captured editor mode. Completion focuses Undo; Undo focuses Complete.
-
-Input archive SHA256:
-1baa5f9bbb4384fc0b93a78042a97bc430760a820fa055f4c6ccb0b5ac965136.
-ReminderApp.tsx and reminders.css were integrated; the archive's older handoff
-was superseded with this summary. Integration repairs restore callback types,
-strengthen footer/cat CSS specificity against later-loaded styles, keep the
-walking sprite clear of Hide/Show, and separate row controls from Edit/Undo.
-
-Mobile row centers are approximately 15/38/61/84 percent. The 48px walking cat
-occupies the lane below row four, above Google Tasks. Hide/Show has a 44px target.
-The cat still celebrates existing reminders' incomplete-to-complete transitions
-and supports reduced motion. Core, Google and companion source are unchanged.
-Google OAuth is unconfigured; live sign-in/import remains untested. No physical
-hardware is connected. Actual iPhone audio/keyboard/safe-area checks remain.
-
-All 20 tests and TypeScript/production build pass. Fresh integrated browser
-checks cover 375x812, 393x852 and a 375x400 editor viewport. See
-coordination/updates/2026-10-24-1526-v19-integration.md for evidence and limits.
-Everything below is historical and superseded by this current V19 contract.
-
----
-# Current integrated contract — V18 + Google Tasks + cat, October 24, 2026
-
-V18 is integrated over Ivan's verified Google Tasks checkpoint. Slots remain
-1=Dial 1, 2=Dial 2, 3=Switch 1, 4=Switch 2. Add/edit callbacks retain
-`boolean | void`: false keeps the draft and captured Add/Edit mode. Complete
-focuses Undo; Undo focuses Complete. All controls retain 44px minimum targets;
-long titles scroll within their row and <=600px viewports use flowing editors.
-
-The four UI files came from the verified V18 archive (SHA256
-ee3d9475f3c920948257be07608fdc09e46173b2abc83241d0bd4191676711f8).
-Integration changes only its narrowed boolean callback types back to the agreed
-boolean | void contract and adds this current summary. V18 supplies lighter
-glass, completion checks/click audio, and dark document/safe-area metadata.
-
-App mounts GoogleTasksImport and CatCompanion in a shared normal-flow footer
-AFTER the full-height board; neither overlaps the aligned rows. Core and Google
-source files are unchanged. Google OAuth remains unconfigured, with truthful
-setup-needed messaging. The cat uses the original verified PNG/source archive,
-rewards only existing reminders' incomplete-to-complete transitions, and
-supports hide/show and reduced motion. No physical hardware is connected.
-
-See the latest integration note for measured browser checks and limitations.
-Earlier handoff sections below are historical and superseded by this contract.
-
----
-# Current UI contract — V18, October 24, 2026
+# Current UI contract — V30, October 24, 2026
 
 This section is authoritative. The revision notes below are historical; where
 they disagree with this summary, use this summary and the current component.
@@ -91,20 +15,27 @@ Ownership and files:
 Contract:
 - `slots` is parent-owned state in stable numeric order 1–4. Physical labels are
   slot 1=Dial 1, 2=Dial 2, 3=Switch 1, 4=Switch 2. Do not renumber stored slots.
-- `onAdd(slotId,title)` and `onEdit(slotId,title)` return `boolean`. `false`
-  means rejected; keep the editor and draft open. Any accepted result closes it.
+- Reminder data may include `urgent?: boolean`; absent means false. `onAdd(slotId,title,urgent)`
+  and `onEdit(slotId,title,urgent)` return `boolean | void`. `false` means rejected;
+  keep the editor and draft open. Any accepted result closes it. Ivan must store and
+  return `urgent` in the parent-owned slot state for the red border to persist.
 - `onComplete`, `onUndo`, and `onActivateControl` are parent-owned actions.
-  Completion controls preserve focus to the newly available Undo action; Undo
-  returns focus to Complete. A simulated control calls `onActivateControl` and
-  repeated completion stays complete. Empty physical controls are disabled.
+  The reminder check toggles: pending calls `onComplete`, completed calls
+  `onUndo`; it preserves focus between the check and Undo action. The simulated
+  switch changes state only on a horizontal pointer swipe: pending + right swipe
+  calls `onActivateControl`; completed + left swipe calls `onUndo`. Its visible
+  track has no surrounding square. Click/tap does nothing. Separate hardware
+  actions remain completion-only; no physical control is connected. Empty
+  controls are disabled.
 - Core errors arrive via `error`; the component keeps role=alert, completion
-  announcements, a hidden save-status announcement, and the 200-character limit.
+  announcements, a hidden save-status announcement, and the 60-character reminder-title limit.
 - The page is a full-height iPhone 16 portrait board with four equal-position
   task rows, no visual header, dark browser/document chrome, and reduced copy.
-  The simulated-control buttons use a quiet glass outline and draw a checkmark
-  on completion; decorative dial and switch graphics are removed. User-initiated
-  completion plays a short, brighter, click-like cue using Web Audio where
-  available.
+  The right-side simulated switches have no square housing. They change state only
+  after a horizontal pointer swipe: swipe right to complete and left to undo;
+  taps/clicks do not toggle them. Decorative dial and switch graphics are
+  removed. User-initiated completion plays a short, brighter, click-like cue
+  using Web Audio where available.
   `ReminderApp` temporarily adds `viewport-fit=cover`, dark document backgrounds,
   and zero body margin so the artwork can extend into the iPhone safe area.
   At narrow viewport heights (including keyboard resize), editors switch to
@@ -114,12 +45,149 @@ Contract:
 - This is a local reminders UI; displayed controls are simulations and no
   physical hardware is connected.
 
-Status: Ivan's integrated V14 includes the verified reliability, focus, label,
-44px-target, and short-viewport repairs. V18 below carries these UI-side fixes
-into this checkout, makes the glass more transparent, removes decorative
-control art, and extends the page into the iPhone safe area. It remains a UI-only
-candidate until Ivan applies it; actual iPhone browser-bar tint still needs a
-human device reload check.
+Status: V29 carries forward the full-height layout, callback compatibility,
+44px targets, completion glow, confetti, and V23 cat behavior. The 128px cat
+roams on a quicker 34–44 second cycle with eased travel and stationary eased
+turns, and supports pointer/touch drag and arrow-key movement. The right-side
+glass switches have no square housing, are enlarged to a 54×32px track, and
+respond only to a horizontal pointer swipe: right completes, left undoes, and
+click/tap does nothing. Reminder titles are capped at 60 characters and centered
+vertically in each row. Completion confetti keeps blue/black/white for regular tasks and uses
+red/black/white for urgent tasks. The editor has an Urgent toggle; pending urgent
+cards use a glowing red border, which hides on completion and returns on undo.
+Urgency is passed to parent callbacks. The reminder title display has a corner
+Braille/English toggle using uncontracted Unicode Braille; input and accessible
+labels remain English. The glow softly pulses; reduced-motion users get a strong
+static glow. This UI candidate is not integrated or pushed; Ivan remains
+integration/push owner. Keep the existing untracked UI source intact.
+Integrated-device review remains with Ivan/team.
+
+Only the dark theme is offered. The V30 light-mode toggle request was withdrawn
+before handoff, so the existing dark visual system remains the sole theme.
+
+## Per-task urgency effects and Braille display — V29, October 24, 2026, 16:11 CDT
+
+The human requested red confetti only for urgent tasks, no urgent border while a
+task is completed, and a corner button to display reminders in Braille. Regular
+completion now uses blue/black/white confetti; urgent completion uses
+red/black/white. Red urgent glow is shown only while pending and returns after
+Undo. The button opposite Hide cat toggles all reminder titles between English
+and uncontracted Grade 1 Unicode Braille. It leaves edit fields and accessible
+screen-reader labels in English. Braille is display-only; it does not change the
+stored title.
+
+Changed paths: `src/ui/ReminderApp.tsx`, `src/ui/reminders.css`, this handoff,
+and the V29 coordination note. Ivan still needs the parent `urgent` state
+integration from V27. No commit or push.
+
+## Stronger urgent-card glow — V28, October 24, 2026, 16:07 CDT
+
+The human asked for the urgent border to glow red and stand out more. The card
+now has a brighter red edge and a layered red halo that gently pulses. Reduced
+motion disables the pulse but keeps a strong static halo. Urgency controls,
+parent callback contract, and confetti colors are unchanged.
+
+Changed path: `src/ui/reminders.css`, this handoff, and the V28 coordination
+note. No commit or push.
+
+## Urgent reminders and red confetti — V27, October 24, 2026, 16:05 CDT
+
+The human asked for an Urgent button in the reminder editor, a red border for
+urgent cards, and red confetti instead of blue. The editor now has an
+`aria-pressed` Urgent toggle for both add and edit. Selecting it previews a red
+card border immediately; saving passes the urgent boolean through `onAdd` or
+`onEdit`, and the card reads `urgent` from parent-owned reminder state. The
+confetti palette changes from blue/black/white to red/black/white. The 60-character
+limit, centered rows, swipe-only switches and cat behavior remain.
+
+Integration: Ivan must carry `urgent?: boolean` in each parent-owned reminder,
+accept the third `urgent` argument on add/edit, persist it, and return it in
+`slots` so the red border survives rerenders and reloads. UI-only checkout does
+not edit Ivan-owned app, storage or core files.
+
+Changed paths: `src/ui/ReminderApp.tsx`, `src/ui/reminders.css`, this handoff,
+and the V27 coordination note. No commit or push.
+
+## Larger centered switches and shorter reminders — V26, October 24, 2026, 16:01 CDT
+
+The human asked for larger switches, centered task text, and a limit to prevent
+long reminders from disrupting the compact board. The switch track is 54×32px
+with a 24px thumb and a 20px slide, fitted within the existing control column.
+The transparent housing remains absent, and interaction remains swipe-only.
+Assigned reminder rows now use the full card height so their text centers in the
+card above the pinned action area. Titles are limited to 60 characters both by
+the input and save validation, including when an older over-limit title is
+edited.
+
+Changed paths: `src/ui/ReminderApp.tsx`, `src/ui/reminders.css`, this handoff,
+and the V27 coordination note. No tests, commit, or push. Ivan remains
+integration/push owner.
+
+## Swipe-only controls — V25, October 24, 2026, 15:58 CDT
+
+The human liked the switch design but asked to remove the box around each one
+and make it respond only to a physical swipe. The square glass button housing
+is removed; only the small glass switch track and thumb remain visible. Taps,
+clicks and keyboard activation do not change task state. A horizontal right
+pointer/touch swipe completes a pending task; a left swipe undoes a completed
+task. Empty slots remain disabled. The task-card confetti and V23 cat motion
+are unchanged.
+
+Changed paths: `src/ui/ReminderApp.tsx`, `src/ui/reminders.css`, this handoff,
+and the V25 coordination note. Ivan remains integration/push owner. No commit
+or push.
+
+## Drag switches and card-wide confetti — V24, October 24, 2026, 15:53 CDT
+
+The human asked to make the right-side controls interactive light switches and
+expand completion confetti across the task card while retaining the existing
+pointer-origin burst. The simulator buttons now expose `role=switch` and
+`aria-checked`, move their glass thumb when toggled, complete on click or a right
+drag, and undo on a left drag. Empty slots stay disabled. Completion creates
+both the existing localized burst and a second burst distributed across the
+full task-card bounds. The same completion sound, parent callback mapping,
+reduced-motion behavior and physical-control contract remain unchanged.
+
+Changed paths: `src/ui/ReminderApp.tsx`, `src/ui/reminders.css`, this handoff,
+and the V24 coordination note. Strict TypeScript check and isolated preview bundle passed. Browser review
+verified click-to-complete, right-drag completion, left-drag undo, accessible
+switch state, and particles spanning the task-card bounds. No tests, commit, or
+push.
+Ivan remains integration/push owner.
+
+## Smaller, smoother, draggable cat — V23, October 24, 2026, 15:51 CDT
+
+The human asked for smoother cat movement and turns, slightly faster travel, a
+smaller cat, and direct dragging. The UI renders the cat at 128px, randomly
+chooses a 34–44 second route, eases travel between stops, and eases each turn in
+place before walking. Pointer and touch drag can place the sprite anywhere in
+its safe screen bounds; it then starts a fresh random route from the drop point.
+Arrow keys move it too (Shift+arrows use larger steps). Existing completion
+confetti and reduced-motion behavior remain.
+
+Changed paths: `src/ui/ReminderApp.tsx`, `src/ui/reminders.css`, this handoff,
+and the V23 coordination note. Strict TypeScript check and isolated esbuild
+bundle passed; live integrated review remains with Ivan. No tests, commit, or
+push. Ivan owns integration and publishing.
+
+## Reversible simulated control and cat walk — V19
+
+The user asked to undo a completed reminder by clicking its button again. The
+reminder check now calls `onUndo` when complete and `onComplete` when pending;
+the simulated control calls `onUndo` when complete and `onActivateControl` when
+pending. Completion sound plays only on the pending to complete transition.
+Accessible names announce the current action. Physical-control callback
+semantics and core remain unchanged.
+
+The user requested the cat be 2.5 times larger, pause and turn while stationary
+before each leg, and show falling confetti at the completion click. UI-owned CSS
+renders the cat at 170px, chooses five randomized waypoints on app mount, and
+animates a short stop/turn/settle at each waypoint before movement. Completion
+clicks create a brief burst of small blue, black, and white particles at the
+pointer location; undo does not. Both effects respect reduced-motion settings.
+The existing V21 full-height rows, separate 44px action row, completion reward,
+and normal-flow Google Tasks section remain. No cat component, App, core,
+storage, or setup files are changed.
 
 No commits or pushes.
 

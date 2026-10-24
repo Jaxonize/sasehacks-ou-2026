@@ -1,0 +1,7 @@
+# V30 integration — October 24, 2026
+
+Ivan / Codex. User explicitly authorized verification, integration, GitHub push and existing website update.
+Source: Slack F0CBUTWPGBG yosh-v30-ui.zip, computed SHA256 fce02917459f5710da7a3867531162c7cc404acc94d29e990f967eee4c2973ea. Six paths inspected; original archive and pre-V30 git archive retained outside repo. No sender checksum supplied.
+Preserved docs commit 5950eb2 and bundled JetBrains Mono. Added optional urgency to core types/actions/storage/callbacks without changing v1 storage key or dropping legacy/Google metadata. Core keeps 200-character compatibility; UI validates 60-character saves with explicit shortening message, preserving rejected drafts. Fixed height-derived board width that squeezed text in shorter viewports.
+Checks: 21 tests pass including urgency reload/edit/completion/undo and legacy 200-character storage; TypeScript/Vite build pass. Integrated browser at 419x604: urgency survives reload, glow returns on Undo, Braille display and English labels, 56x56 switch targets, tap no-op, left/right swipe, keyboard completion, no horizontal overflow, no console errors. Test reminder restored to completed/nonurgent and cat shown.
+Limits: actual iPhone/audio and live Google OAuth remain unverified; reduced-motion CSS inspected, not freshly forced at runtime. Braille is visual mapping, not certified transcription or tactile output. Website publishing follows GitHub push; final Devpost submission remains on hold.

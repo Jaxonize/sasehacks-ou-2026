@@ -11,6 +11,7 @@ export interface Reminder {
   id: string;
   title: string;
   completed: boolean;
+  urgent?: boolean;
   source?: GoogleTaskSource;
 }
 
@@ -27,8 +28,8 @@ export interface ReminderViewProps {
   persistenceStatus?: PersistenceStatus;
   error?: string | null;
   // false rejects the draft; true/void accepts it, including memory-only changes.
-  onAdd: (slotId: SlotId, title: string) => boolean | void;
-  onEdit: (slotId: SlotId, title: string) => boolean | void;
+  onAdd: (slotId: SlotId, title: string, urgent: boolean) => boolean | void;
+  onEdit: (slotId: SlotId, title: string, urgent: boolean) => boolean | void;
   onComplete: (slotId: SlotId) => void;
   onUndo: (slotId: SlotId) => void;
   onActivateControl: (slotId: SlotId) => void;

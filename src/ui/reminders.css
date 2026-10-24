@@ -112,7 +112,7 @@
 
 /* iPhone 16 board: four evenly spaced control rows, with no header above them. */
 .sb-app { min-height:100dvh; padding:0; align-items:center; justify-content:center; }
-.sb-app .sb-phone { display:flex; flex-direction:column; width:min(100%,430px,46.13dvh); height:100dvh; min-height:0; padding:5dvh 16px; border:0; border-radius:0; background:transparent; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
+.sb-app .sb-phone { display:flex; flex-direction:column; width:min(100%,430px); height:100dvh; min-height:0; padding:5dvh 16px; border:0; border-radius:0; background:transparent; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
 .sb-app .sb-reminders { display:flex; flex:1; min-height:0; }
 .sb-app .sb-list { width:100%; height:100%; grid-template-rows:repeat(4,minmax(0,1fr)); gap:1.2dvh; }
 .sb-app .sb-card { position:relative; display:flex; min-height:0; align-items:center; justify-content:center; padding:10px 12px; border-radius:20px; }
@@ -214,17 +214,24 @@
   backdrop-filter:blur(18px) saturate(150%);
 }
 
-/* Hardware-control simulation is a quiet glass button with a completion check. */
+/* Simulated hardware uses an interactive glass rocker switch. */
 .sb-app .sb-control {
   transform:none;
   transition:border-color 160ms,background-color 160ms,box-shadow 160ms;
+  touch-action:none;
+  cursor:grab;
 }
 .sb-app .sb-control:hover:not(:disabled) { transform:none; }
-.sb-app .sb-control-check { display:grid; place-items:center; width:32px; height:32px; color:#d5f2ff; }
-.sb-app .sb-control-check::before { content:''; grid-area:1 / 1; width:13px; height:13px; border:1.5px solid #b7d8e980; border-radius:50%; transition:opacity 140ms,transform 140ms; }
-.sb-app .sb-control--done .sb-control-check::before { opacity:0; transform:scale(.5); }
-.sb-app .sb-control-check svg { grid-area:1 / 1; width:26px; height:26px; overflow:visible; transform-box:fill-box; transform-origin:center; animation:sb-control-check-spin 520ms cubic-bezier(.18,.78,.22,1) both; }
-.sb-app .sb-control-check path { stroke-dasharray:28; stroke-dashoffset:28; animation:sb-control-check-draw 420ms cubic-bezier(.2,.8,.2,1) forwards; }
+.sb-app .sb-control:active:not(:disabled) { cursor:grabbing; }
+.sb-app .sb-control:focus-visible { outline:2px solid #b9e6fc; outline-offset:4px; }
+.sb-app .sb-control--dragging { cursor:grabbing; }
+.sb-app .sb-switch-track { position:relative; display:block; width:54px; height:32px; border:1px solid #c0deee91; border-radius:999px; background:linear-gradient(145deg,#091522dd,#182c3bcc); box-shadow:inset 2px 2px 5px #02070b9c,inset -1px -1px 2px #ffffff1a,0 1px 1px #ffffff20; transition:background 200ms,border-color 200ms,box-shadow 200ms; }
+.sb-app .sb-switch-thumb { position:absolute; top:3px; left:3px; display:grid; place-items:center; width:24px; height:24px; border:1px solid #d2e6f194; border-radius:50%; color:#526777; background:linear-gradient(145deg,#e3f4ff,#83a9c1); box-shadow:0 2px 5px #02070bb0,inset 1px 1px 0 #ffffffb3; transform:translateX(var(--sb-switch-drag-offset,0px)); transition:transform 220ms cubic-bezier(.2,.8,.2,1),background 180ms,color 180ms; }
+.sb-app .sb-control--done .sb-switch-track { border-color:#91d7f5bc; background:linear-gradient(145deg,#1e77a3,#3082b0 58%,#174e70); box-shadow:inset 2px 2px 5px #06152185,inset -1px -1px 2px #ffffff34,0 0 12px #3082b04a; }
+.sb-app .sb-control--done .sb-switch-thumb { color:#28739a; background:linear-gradient(145deg,#ffffff,#ccecff); transform:translateX(calc(20px + var(--sb-switch-drag-offset,0px))); }
+.sb-app .sb-control:disabled .sb-switch-track { opacity:.55; }
+.sb-app .sb-switch-thumb svg { width:12px; height:12px; overflow:visible; transform-box:fill-box; transform-origin:center; animation:sb-control-check-spin 420ms cubic-bezier(.18,.78,.22,1) both; }
+.sb-app .sb-switch-thumb path { stroke-dasharray:28; stroke-dashoffset:28; animation:sb-control-check-draw 340ms cubic-bezier(.2,.8,.2,1) forwards; }
 @keyframes sb-control-check-draw { to { stroke-dashoffset:0; } }
 @keyframes sb-control-check-spin {
   from { opacity:0; transform:rotate(-180deg) scale(.52); }
@@ -232,7 +239,8 @@
   to { opacity:1; transform:rotate(0) scale(1); }
 }
 @media (prefers-reduced-motion:reduce) {
-  .sb-app .sb-control-check svg,.sb-app .sb-control-check path { animation:none; opacity:1; transform:none; stroke-dashoffset:0; }
+  .sb-app .sb-switch-track,.sb-app .sb-switch-thumb { transition:none; }
+  .sb-app .sb-switch-thumb svg,.sb-app .sb-switch-thumb path { animation:none; opacity:1; transform:none; stroke-dashoffset:0; }
 }
 
 /* Let the cat meander over the wave artwork; Google Tasks stays after it. */
@@ -270,9 +278,13 @@
     z-index:1;
     left:var(--sb-cat-x0, 5%);
     top:var(--sb-cat-y0, 82dvh);
-    width:170px;
-    height:170px;
-    animation:sb-cat-roam var(--sb-cat-walk-duration, 40s) linear infinite;
+    width:128px;
+    height:128px;
+    animation:sb-cat-roam var(--sb-cat-walk-duration, 38s) cubic-bezier(.35,.05,.2,1) infinite;
+    transform-style:preserve-3d;
+    backface-visibility:visible;
+    outline:none;
+    cursor:grab;
     image-rendering:pixelated;
     opacity:.82;
     filter:drop-shadow(0 6px 12px #02070c99);
@@ -311,7 +323,7 @@
   .sb-app .sb-list { grid-template-rows:repeat(4,minmax(0,1fr)); gap:1.2dvh; }
   /* Keep each 44px Edit/Undo target in its own row within the larger cards. */
   .sb-app .sb-card { padding-block:4px; }
-  .sb-app .sb-card:not(.sb-card--empty):not(:has(.sb-form)) .sb-task-row { height:calc(100% - 44px); align-self:flex-start; }
+  .sb-app .sb-card:not(.sb-card--empty):not(:has(.sb-form)) .sb-task-row { height:100%; align-self:stretch; }
   .sb-app .sb-reminder-row { height:100%; }
   .sb-app .sb-card-actions { bottom:0; }
 }
@@ -334,29 +346,29 @@
   100% { opacity:0; transform:translate3d(var(--sb-confetti-x,0),var(--sb-confetti-y,90px),0) rotate(var(--sb-confetti-spin,360deg)); }
 }
 @keyframes sb-cat-roam {
-  0% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-initial-facing,-1)); }
-  2% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face0,1)); }
-  6% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face0,1)); }
-  20% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face0,1)); }
-  22% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face0,1)); }
-  24% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
-  26% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
-  40% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
-  42% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
-  44% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face2,1)); }
-  46% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face2,1)); }
-  60% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face2,1)); }
-  62% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face2,1)); }
-  64% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
-  66% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
-  80% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
-  82% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
-  84% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face4,1)); }
-  86% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face4,1)); }
-  94% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face4,1)); }
-  96% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face4,1)); }
-  98% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-initial-facing,-1)); }
-  100% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-initial-facing,-1)); }
+  0% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-initial-facing,180deg)); }
+  2% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-face0,0deg)); }
+  6% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-face0,0deg)); }
+  20% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:rotateY(var(--sb-cat-face0,0deg)); }
+  22% { animation-timing-function:cubic-bezier(.4,0,.2,1); left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:rotateY(var(--sb-cat-face0,0deg)); }
+  24% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:rotateY(var(--sb-cat-face1,0deg)); }
+  26% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:rotateY(var(--sb-cat-face1,0deg)); }
+  40% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:rotateY(var(--sb-cat-face1,0deg)); }
+  42% { animation-timing-function:cubic-bezier(.4,0,.2,1); left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:rotateY(var(--sb-cat-face1,0deg)); }
+  44% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:rotateY(var(--sb-cat-face2,180deg)); }
+  46% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:rotateY(var(--sb-cat-face2,180deg)); }
+  60% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:rotateY(var(--sb-cat-face2,180deg)); }
+  62% { animation-timing-function:cubic-bezier(.4,0,.2,1); left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:rotateY(var(--sb-cat-face2,180deg)); }
+  64% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:rotateY(var(--sb-cat-face3,0deg)); }
+  66% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:rotateY(var(--sb-cat-face3,0deg)); }
+  80% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:rotateY(var(--sb-cat-face3,0deg)); }
+  82% { animation-timing-function:cubic-bezier(.4,0,.2,1); left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:rotateY(var(--sb-cat-face3,0deg)); }
+  84% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:rotateY(var(--sb-cat-face4,180deg)); }
+  86% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:rotateY(var(--sb-cat-face4,180deg)); }
+  94% { animation-timing-function:cubic-bezier(.35,.05,.2,1); left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-face4,180deg)); }
+  96% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-face4,180deg)); }
+  98% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-initial-facing,180deg)); }
+  100% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:rotateY(var(--sb-cat-initial-facing,180deg)); }
 }
 @media (prefers-reduced-motion:reduce) {
   .cat-companion__sprite { animation:none !important; }
@@ -365,7 +377,7 @@
 /* Keep V21's brief completion reward while the cat pauses or roams. */
 @media (max-width:760px) {
   #root > .app-footer > .cat-companion--celebrating .cat-companion__sprite {
-    animation:sb-cat-roam var(--sb-cat-walk-duration,68s) linear infinite,sb-cat-reward 550ms ease-in-out 2;
+    animation:sb-cat-roam var(--sb-cat-walk-duration,38s) cubic-bezier(.35,.05,.2,1) infinite,sb-cat-reward 550ms ease-in-out 2;
     animation-delay:0s,0s;
   }
 }
@@ -373,3 +385,93 @@
   0%,100% { filter:drop-shadow(0 6px 12px #02070c99); }
   50% { filter:drop-shadow(0 0 10px #bfe8fc) brightness(1.35); }
 }
+
+/* Keep the switch itself visible; remove the square simulator housing.
+   State changes only through the horizontal pointer swipe handlers. */
+.sb-app .sb-control,
+.sb-app .sb-control:hover:not(:disabled),
+.sb-app .sb-control:active:not(:disabled),
+.sb-app .sb-control:disabled {
+  width:56px;
+  height:56px;
+  min-width:56px;
+  min-height:56px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  outline:0;
+  background:transparent;
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  transform:none;
+}
+.sb-app .sb-control--dragging .sb-switch-thumb { transition:none; }
+.sb-app .sb-control:focus-visible .sb-switch-track { outline:2px solid #b9e6fc; outline-offset:4px; }
+
+/* Urgency stays unmistakable without covering the translucent glass surface. */
+.sb-app .sb-card.sb-card--urgent {
+  border-color:#ff5369;
+  animation:sb-urgent-glow 2.1s ease-in-out infinite alternate;
+}
+@keyframes sb-urgent-glow {
+  from { box-shadow:0 0 0 1px #ff465c9e,0 0 15px 2px #ed354a82,0 0 30px 5px #e34c5b49,0 9px 24px #030a1160,inset 0 0 15px #e34c5b16,inset 1px 1px 0 #ffffff38,inset -1px -1px 0 #08152230; }
+  to { box-shadow:0 0 0 2px #ff5369d4,0 0 24px 5px #ff354fba,0 0 48px 10px #e34c5b70,0 9px 26px #030a116b,inset 0 0 22px #e34c5b28,inset 1px 1px 0 #ffffff4a,inset -1px -1px 0 #08152230; }
+}
+.sb-app .sb-urgency-toggle {
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-width:74px;
+  min-height:44px;
+  padding:6px 10px;
+  border:1px solid #e34c5b8a;
+  border-radius:11px;
+  color:#ffd8dc;
+  background:#e34c5b18;
+  font-size:11px;
+  font-weight:650;
+  transition:background 160ms,border-color 160ms,box-shadow 160ms,color 160ms;
+}
+.sb-app .sb-urgency-toggle:hover { border-color:#ff8793; background:#e34c5b28; }
+.sb-app .sb-urgency-toggle--active { border-color:#ffb4bc; color:#fff; background:linear-gradient(145deg,#ed6370,#a92f40); box-shadow:0 0 13px #e34c5b54,inset 0 1px 0 #ffffff54; }
+.sb-app .sb-urgency-mark { display:grid; place-items:center; width:16px; height:16px; border:1px solid currentColor; border-radius:50%; font-size:11px; line-height:1; }
+.sb-app .sb-form-actions-spacer { flex:1 1 auto; }
+@media (prefers-reduced-motion:reduce) { .sb-app .sb-urgency-toggle { transition:none; } }
+@media (prefers-reduced-motion:reduce) {
+  .sb-app .sb-card.sb-card--urgent {
+    animation:none;
+    box-shadow:0 0 0 2px #ff5369c9,0 0 22px 4px #ff354f9c,0 0 42px 8px #e34c5b5e,0 9px 24px #030a1160,inset 0 0 18px #e34c5b22,inset 1px 1px 0 #ffffff38,inset -1px -1px 0 #08152230;
+  }
+}
+
+/* Braille display toggle sits opposite the companion hide button. */
+.sb-reminder-title--braille { font-family:'Apple Braille','Braille29',system-ui,sans-serif; letter-spacing:.035em; }
+.sb-braille-toggle {
+  position:fixed;
+  z-index:6;
+  left:max(8px,env(safe-area-inset-left));
+  bottom:max(4px,env(safe-area-inset-bottom));
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:82px;
+  min-height:44px;
+  padding:0 13px;
+  border:1px solid #a8d6ef88;
+  border-radius:999px;
+  color:#e5f5ff;
+  background:linear-gradient(145deg,#d9efff2b,#8bbbd51a 54%,#102337a8),#142b3bd9;
+  box-shadow:0 5px 15px #030a116e,inset 1px 1px 0 #ffffff38,inset -1px -1px 0 #08152240;
+  -webkit-backdrop-filter:blur(16px) saturate(150%);
+  backdrop-filter:blur(16px) saturate(150%);
+  font-size:11px;
+  font-weight:650;
+  letter-spacing:.035em;
+  touch-action:manipulation;
+}
+.sb-braille-toggle:hover { border-color:#d4efff; background-color:#1f5270; }
+.sb-braille-toggle[aria-pressed="true"] { border-color:#79c7ed; color:#fff; box-shadow:0 0 13px #3082b052,0 5px 15px #030a116e,inset 1px 1px 0 #ffffff50; }
+.sb-braille-toggle:focus-visible { outline:3px solid #b9e6fc; outline-offset:3px; }

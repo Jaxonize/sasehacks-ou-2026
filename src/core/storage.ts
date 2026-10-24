@@ -21,6 +21,7 @@ export function loadSlots(storage: StoragePort): ReminderSlot[] {
     const reminder = row.reminder;
     if (reminder === null) return slot;
     if (!reminder || typeof reminder !== 'object' || !('id' in reminder) || typeof reminder.id !== 'string' || !reminder.id || seen.has(reminder.id) || !('title' in reminder) || typeof reminder.title !== 'string' || validateTitle(reminder.title) || !('completed' in reminder) || typeof reminder.completed !== 'boolean') throw new Error('Saved reminder is invalid.');
+    if ('urgent' in reminder && typeof reminder.urgent !== 'boolean') throw new Error('Saved reminder urgency is invalid.');
     seen.add(reminder.id);
     const source = 'source' in reminder ? reminder.source : undefined;
     let provenance: GoogleTaskSource | undefined;
@@ -29,7 +30,7 @@ export function loadSlots(storage: StoragePort): ReminderSlot[] {
       provenance = copyGoogleTaskSource(source);
       sources.push(provenance);
     }
-    return { ...slot, reminder: { id: reminder.id, title: reminder.title.trim(), completed: reminder.completed, ...(provenance ? { source: provenance } : {}) } };
+    return { ...slot, reminder: { id: reminder.id, title: reminder.title.trim(), completed: reminder.completed, ...('urgent' in reminder ? { urgent: reminder.urgent as boolean } : {}), ...(provenance ? { source: provenance } : {}) } };
   });
 }
 
