@@ -130,7 +130,7 @@
 .sb-app .sb-card:has(.sb-form) .sb-task-row { position:absolute; top:8px; left:12px; width:calc(100% - 24px); }
 .sb-app .sb-form { position:absolute; z-index:2; right:10px; bottom:7px; left:10px; margin:0; padding:8px 10px; border:1px solid #9dc8e55c; border-radius:14px; background:#111d2bf2; box-shadow:0 8px 22px #0008; }
 .sb-app .sb-form label { margin-bottom:3px; font-size:10px; }
-.sb-app .sb-form input { min-height:44px; padding:7px 9px; }
+.sb-app .sb-form input { min-height:40px; padding:7px 9px; }
 .sb-app .sb-form-actions { margin-top:4px; }
 .sb-app .sb-form-actions .sb-text-button,.sb-app .sb-form-actions .sb-primary { min-height:36px; }
 .sb-app .sb-error { position:fixed; z-index:5; top:8px; left:12px; right:12px; max-width:406px; margin:0 auto; }
@@ -270,10 +270,9 @@
     z-index:1;
     left:var(--sb-cat-x0, 5%);
     top:var(--sb-cat-y0, 82dvh);
-    width:68px;
-    height:68px;
-    animation:sb-cat-roam var(--sb-cat-walk-duration, 38s) ease-in-out infinite alternate;
-    animation-delay:var(--sb-cat-walk-delay, 0s);
+    width:170px;
+    height:170px;
+    animation:sb-cat-roam var(--sb-cat-walk-duration, 40s) linear infinite;
     image-rendering:pixelated;
     opacity:.82;
     filter:drop-shadow(0 6px 12px #02070c99);
@@ -316,25 +315,58 @@
   .sb-app .sb-reminder-row { height:100%; }
   .sb-app .sb-card-actions { bottom:0; }
 }
+/* Short, light confetti falls from each completion click, then clears itself. */
+.sb-confetti-layer { position:fixed; z-index:30; inset:0; overflow:hidden; pointer-events:none; }
+.sb-confetti-piece {
+  position:absolute;
+  display:block;
+  width:var(--sb-confetti-size,7px);
+  height:calc(var(--sb-confetti-size,7px) * 1.35);
+  border:1px solid #ffffff75;
+  border-radius:2px;
+  background:var(--sb-confetti-color,#3082b0);
+  opacity:0;
+  animation:sb-confetti-fall 900ms cubic-bezier(.2,.64,.36,1) var(--sb-confetti-delay,0ms) both;
+}
+@keyframes sb-confetti-fall {
+  0% { opacity:0; transform:translate3d(0,0,0) rotate(0); }
+  12% { opacity:1; }
+  100% { opacity:0; transform:translate3d(var(--sb-confetti-x,0),var(--sb-confetti-y,90px),0) rotate(var(--sb-confetti-spin,360deg)); }
+}
 @keyframes sb-cat-roam {
-  0% { left:var(--sb-cat-x0, 5%); top:var(--sb-cat-y0, 82dvh); transform:scaleX(1); }
-  14% { left:var(--sb-cat-x1, 72%); top:var(--sb-cat-y1, 71dvh); transform:scaleX(1); }
-  29% { left:var(--sb-cat-x2, 24%); top:var(--sb-cat-y2, 58dvh); transform:scaleX(-1); }
-  44% { left:var(--sb-cat-x3, 68%); top:var(--sb-cat-y3, 44dvh); transform:scaleX(1); }
-  59% { left:var(--sb-cat-x4, 9%); top:var(--sb-cat-y4, 31dvh); transform:scaleX(-1); }
-  74% { left:var(--sb-cat-x5, 62%); top:var(--sb-cat-y5, 19dvh); transform:scaleX(1); }
-  88% { left:var(--sb-cat-x6, 35%); top:var(--sb-cat-y6, 64dvh); transform:scaleX(-1); }
-  100% { left:var(--sb-cat-x7, 75%); top:var(--sb-cat-y7, 79dvh); transform:scaleX(1); }
+  0% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-initial-facing,-1)); }
+  2% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face0,1)); }
+  6% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face0,1)); }
+  20% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face0,1)); }
+  22% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face0,1)); }
+  24% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
+  26% { left:var(--sb-cat-x1,40%); top:var(--sb-cat-y1,54dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
+  40% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
+  42% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face1,-1)); }
+  44% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face2,1)); }
+  46% { left:var(--sb-cat-x2,15%); top:var(--sb-cat-y2,37dvh); transform:scaleX(var(--sb-cat-face2,1)); }
+  60% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face2,1)); }
+  62% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face2,1)); }
+  64% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
+  66% { left:var(--sb-cat-x3,66%); top:var(--sb-cat-y3,22dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
+  80% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
+  82% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face3,-1)); }
+  84% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face4,1)); }
+  86% { left:var(--sb-cat-x4,34%); top:var(--sb-cat-y4,62dvh); transform:scaleX(var(--sb-cat-face4,1)); }
+  94% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face4,1)); }
+  96% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-face4,1)); }
+  98% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-initial-facing,-1)); }
+  100% { left:var(--sb-cat-x0,8px); top:var(--sb-cat-y0,70dvh); transform:scaleX(var(--sb-cat-initial-facing,-1)); }
 }
 @media (prefers-reduced-motion:reduce) {
   .cat-companion__sprite { animation:none !important; }
+  .sb-confetti-piece { animation:none !important; opacity:0; }
 }
-
-/* Celebrate without interrupting the randomized roaming path. */
+/* Keep V21's brief completion reward while the cat pauses or roams. */
 @media (max-width:760px) {
   #root > .app-footer > .cat-companion--celebrating .cat-companion__sprite {
-    animation:sb-cat-roam var(--sb-cat-walk-duration,38s) ease-in-out infinite alternate,sb-cat-reward 550ms ease-in-out 2;
-    animation-delay:var(--sb-cat-walk-delay,0s),0s;
+    animation:sb-cat-roam var(--sb-cat-walk-duration,68s) linear infinite,sb-cat-reward 550ms ease-in-out 2;
+    animation-delay:0s,0s;
   }
 }
 @keyframes sb-cat-reward {

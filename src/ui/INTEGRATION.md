@@ -1,3 +1,16 @@
+# Current V22 integration — October 24, 2026
+
+Ivan explicitly authorized V22 integration and push. Source archive SHA256:
+3e8786a4e376ba441f5542979c7c83148498bec843e25a5321a9a406530c0607.
+ReminderApp.tsx and reminders.css match Yosh's V22 candidate. The app retains
+locally bundled JetBrains Mono, boolean | void callback compatibility, 44px
+Hide/Show and pointer-transparent artwork. Cat size is 170px with five randomized
+waypoints, pauses and stationary turns. Completion clicks create 26 blue/black/
+white confetti pieces; Undo creates none; pieces clean up after 1250ms. Reduced
+motion CSS disables cat and confetti animations. Core, Google and companion
+sources remain unchanged. Earlier summaries below are historical.
+
+---
 # Accepted V21 integration — October 24, 2026
 
 Ivan selected V21 and explicitly requested fixes followed by a Git push.

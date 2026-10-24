@@ -9,3 +9,8 @@
   background: #081522;
 }
 .app-footer > .gt-entry { padding: 0; }
+
+/* Bundle the same font for every device, including the import dialog. */
+body, .sb-app, .gt-entry, .gt-dialog, .cat-companion {
+  font-family:'JetBrains Mono Variable',monospace;
+}

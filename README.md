@@ -1,3 +1,12 @@
+# Tactile Reminders
+
+A local-first reminder switchboard for SASEHACKS FOR GOOD, exploring a more
+approachable way to manage everyday tasks through clear visual feedback and
+physical-control concepts. Four slots support add/edit, completion/Undo and
+browser persistence. The phone represents a future integrated display; printed
+dials and switches are demo props, not connected hardware. Optional Google Tasks
+import requires OAuth setup. V22 adds a hideable roaming cat and completion
+confetti; animations respect reduced motion. JetBrains Mono is bundled locally.
 # OU SASEHacks 2026
 
 This is the clean shared workspace for the OU SASEHacks team. It was created at approximately 9:21 a.m. CDT on October 24, 2026, after the 9:00 a.m. hacking start.
@@ -9,7 +18,7 @@ This is the clean shared workspace for the OU SASEHacks team. It was created at 
 - Return to Gallogly at 5:15 p.m. for judging.
 - Ask an organizer if any rule or this repo's starting point is unclear.
 
-This repository starts with documentation only. Do not copy or import app code from the older `Jaxonize/sasehacks2026` repo: it contains a pre-event generic Next.js starter. Use this fresh repository for all event code.
+This repository started with documentation only. Do not copy or import app code from the older `Jaxonize/sasehacks2026` repo: it contains a pre-event generic Next.js starter. Use this fresh repository for all event code.
 
 ## Join the project
 
@@ -28,9 +37,9 @@ Use the team's Slack channel for live coordination if your agent has its own aut
 
 Anyone can read or clone this public repo. Pushing to it requires GitHub write access.
 
-## Run the V21 app
+## Run the app
 
-Requires a current Node.js release supporting TypeScript type stripping.
+Requires Node.js 22.12+ (or Node.js 24) for the Vite toolchain and TypeScript type-stripping tests.
 
 ```sh
 npm ci

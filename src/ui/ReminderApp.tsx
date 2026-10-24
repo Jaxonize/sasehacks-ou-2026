@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { CSSProperties, FormEvent, MouseEvent as ReactMouseEvent } from 'react';
 import './reminders.css';
 
 export type SlotId = 1 | 2 | 3 | 4;
@@ -18,8 +18,46 @@ export interface ReminderAppProps {
   onActivateControl: (slotId: SlotId) => void;
 }
 const SLOT_IDS: readonly SlotId[] = [1, 2, 3, 4];
+const CAT_SIZE = 170;
+const CONFETTI_COLORS = ['#3082b0', '#111820', '#f6f9fc'] as const;
 // Keep the numeric mapping aligned with the enclosure's physical controls.
 const controlName = (id: SlotId) => id < 3 ? 'Dial ' + id : 'Switch ' + (id - 2);
+
+interface ConfettiParticle {
+  key: string;
+  x: number;
+  y: number;
+  size: number;
+  dx: number;
+  dy: number;
+  spin: number;
+  delay: number;
+  color: string;
+}
+interface ConfettiBurst { id: number; particles: ConfettiParticle[]; }
+type ConfettiParticleStyle = CSSProperties & {
+  '--sb-confetti-size': string;
+  '--sb-confetti-x': string;
+  '--sb-confetti-y': string;
+  '--sb-confetti-spin': string;
+  '--sb-confetti-delay': string;
+  '--sb-confetti-color': string;
+};
+
+function ConfettiLayer({ bursts }: { bursts: readonly ConfettiBurst[] }) {
+  return <div className="sb-confetti-layer" aria-hidden="true">
+    {bursts.flatMap(burst => burst.particles.map(particle => <span key={particle.key} className="sb-confetti-piece" style={{
+      left: particle.x,
+      top: particle.y,
+      '--sb-confetti-size': `${particle.size}px`,
+      '--sb-confetti-x': `${particle.dx}px`,
+      '--sb-confetti-y': `${particle.dy}px`,
+      '--sb-confetti-spin': `${particle.spin}deg`,
+      '--sb-confetti-delay': `${particle.delay}ms`,
+      '--sb-confetti-color': particle.color,
+    } as ConfettiParticleStyle} />))}
+  </div>;
+}
 
 function Checkmark() {
   return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 12 4 4 8-8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
@@ -84,8 +122,9 @@ function playCompletionClick() {
   }
 }
 
-function ReminderCard({ slot, onAdd, onEdit, onComplete, onUndo, onActivateControl }: {
+function ReminderCard({ slot, onAdd, onEdit, onComplete, onUndo, onActivateControl, onConfetti }: {
   slot: ReminderSlot;
+  onConfetti: (x: number, y: number) => void;
 } & Pick<ReminderAppProps, 'onAdd' | 'onEdit' | 'onComplete' | 'onUndo' | 'onActivateControl'>) {
   const { slotId, reminder } = slot;
   const [editing, setEditing] = useState(false);
@@ -111,13 +150,15 @@ function ReminderCard({ slot, onAdd, onEdit, onComplete, onUndo, onActivateContr
     onUndo(slotId);
     requestAnimationFrame(() => completeFocus.current?.focus());
   }
-  function toggleReminderCompletion() {
+  function toggleReminderCompletion(event: ReactMouseEvent<HTMLButtonElement>) {
     if (completed) {
       onUndo(slotId);
       requestAnimationFrame(() => completeFocus.current?.focus());
     } else {
       playCompletionClick();
       onComplete(slotId);
+      const rect = event.currentTarget.getBoundingClientRect();
+      onConfetti(event.clientX || rect.left + rect.width / 2, event.clientY || rect.top + rect.height / 2);
       requestAnimationFrame(() => undoFocus.current?.focus());
     }
   }
@@ -137,7 +178,7 @@ function ReminderCard({ slot, onAdd, onEdit, onComplete, onUndo, onActivateContr
       {editing ? <span className="sb-editing-label">{editorMode === 'edit' ? 'Editing this reminder' : 'Adding a reminder'}</span> : reminder ?
         <div className="sb-reminder-row"><span className="sb-slot-number" aria-hidden="true">{slotId.toString().padStart(2, '0')}</span><button type="button" ref={completeFocus} className="sb-complete" onClick={toggleReminderCompletion} aria-label={completed ? 'Undo completion of ' + reminder.title : 'Complete ' + reminder.title}>{completed && <Checkmark />}</button><h2 className="sb-reminder-title" tabIndex={0}>{reminder.title}</h2></div> :
         <button type="button" className="sb-add" ref={returnFocus} onClick={beginEdit}><span className="sb-add-icon" aria-hidden="true" /> Add<span className="sb-sr-only"> a reminder to {controlName(slotId)}</span></button>}
-      <button type="button" className={'sb-control' + (completed ? ' sb-control--done' : '')} disabled={!reminder || editing} onClick={() => { if (completed) onUndo(slotId); else { playCompletionClick(); onActivateControl(slotId); } }} aria-label={!reminder ? 'No reminder assigned to ' + controlName(slotId) : completed ? 'Simulate ' + controlName(slotId) + ': undo completion of ' + reminder.title : 'Simulate ' + controlName(slotId) + ': complete ' + reminder.title}>
+      <button type="button" className={'sb-control' + (completed ? ' sb-control--done' : '')} disabled={!reminder || editing} onClick={event => { if (completed) onUndo(slotId); else { playCompletionClick(); onActivateControl(slotId); const rect = event.currentTarget.getBoundingClientRect(); onConfetti(event.clientX || rect.left + rect.width / 2, event.clientY || rect.top + rect.height / 2); } }} aria-label={!reminder ? 'No reminder assigned to ' + controlName(slotId) : completed ? 'Simulate ' + controlName(slotId) + ': undo completion of ' + reminder.title : 'Simulate ' + controlName(slotId) + ': complete ' + reminder.title}>
         <span className="sb-control-check" aria-hidden="true">{completed && <Checkmark />}</span>
       </button>
     </div>
@@ -156,7 +197,33 @@ export function ReminderApp({ slots, persistenceStatus, error, onAdd, onEdit, on
   // Always render in physical control order, even if the caller supplies a different array order.
   const ordered = SLOT_IDS.map(slotId => slots.find(slot => slot.slotId === slotId) ?? { slotId, reminder: null });
   const [announcement, setAnnouncement] = useState('');
+  const [confettiBursts, setConfettiBursts] = useState<ConfettiBurst[]>([]);
   const previous = useRef<Record<number, boolean> | null>(null);
+  const nextConfettiId = useRef(0);
+  const confettiTimers = useRef(new Set<number>());
+  function launchConfetti(x: number, y: number) {
+    const id = nextConfettiId.current++;
+    const particles = Array.from({ length: 26 }, (_, index) => ({
+      key: `${id}-${index}`,
+      x,
+      y,
+      size: 5 + Math.random() * 5,
+      dx: (Math.random() - 0.5) * 150,
+      dy: 55 + Math.random() * 95,
+      spin: (Math.random() - 0.5) * 620,
+      delay: Math.random() * 110,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+    }));
+    setConfettiBursts(current => [...current, { id, particles }]);
+    const timer = window.setTimeout(() => {
+      setConfettiBursts(current => current.filter(burst => burst.id !== id));
+      confettiTimers.current.delete(timer);
+    }, 1250);
+    confettiTimers.current.add(timer);
+  }
+  useEffect(() => () => {
+    for (const timer of confettiTimers.current) window.clearTimeout(timer);
+  }, []);
   useLayoutEffect(() => {
     const root = document.documentElement;
     const body = document.body;
@@ -190,18 +257,29 @@ export function ReminderApp({ slots, persistenceStatus, error, onAdd, onEdit, on
     body.style.backgroundColor = '#081522';
     body.style.margin = '0';
     const catMotionKeys = [
-      '--sb-cat-walk-duration', '--sb-cat-walk-delay',
-      ...Array.from({ length: 8 }, (_, index) => [`--sb-cat-x${index}`, `--sb-cat-y${index}`]).flat(),
+      '--sb-cat-walk-duration', '--sb-cat-initial-facing',
+      ...Array.from({ length: 5 }, (_, index) => [`--sb-cat-x${index}`, `--sb-cat-y${index}`, `--sb-cat-face${index}`]).flat(),
     ];
     const previousCatMotion = new Map<string, string>(catMotionKeys.map(key => [key, root.style.getPropertyValue(key)] as const));
-    const randomPercent = (min: number, max: number) => `${Math.round(min + Math.random() * (max - min))}%`;
-    for (let index = 0; index < 8; index++) {
-      root.style.setProperty(`--sb-cat-x${index}`, randomPercent(4, 74));
-      root.style.setProperty(`--sb-cat-y${index}`, `${Math.round(12 + Math.random() * 68)}dvh`);
+    const catMaxX = Math.max(0, window.innerWidth - CAT_SIZE - 8);
+    const catMinY = Math.min(Math.round(window.innerHeight * 0.12), Math.max(0, window.innerHeight - CAT_SIZE));
+    const catMaxY = Math.max(catMinY, window.innerHeight - CAT_SIZE - 8);
+    const catWaypoints = Array.from({ length: 5 }, () => ({
+      x: Math.round(Math.random() * catMaxX),
+      y: Math.round(catMinY + Math.random() * (catMaxY - catMinY)),
+    }));
+    const catFacings = catWaypoints.map((point, index) => {
+      const next = catWaypoints[(index + 1) % catWaypoints.length];
+      return next.x === point.x ? (Math.random() < 0.5 ? -1 : 1) : next.x > point.x ? 1 : -1;
+    });
+    for (let index = 0; index < catWaypoints.length; index++) {
+      root.style.setProperty(`--sb-cat-x${index}`, `${catWaypoints[index].x}px`);
+      root.style.setProperty(`--sb-cat-y${index}`, `${catWaypoints[index].y}px`);
+      root.style.setProperty(`--sb-cat-face${index}`, String(catFacings[index]));
     }
-    const walkDuration = 28 + Math.random() * 22;
+    root.style.setProperty('--sb-cat-initial-facing', String(-catFacings[0]));
+    const walkDuration = 58 + Math.random() * 18;
     root.style.setProperty('--sb-cat-walk-duration', `${walkDuration}s`);
-    root.style.setProperty('--sb-cat-walk-delay', `${-Math.random() * walkDuration}s`);
     return () => {
       for (const [key, value] of previousCatMotion) {
         if (value) root.style.setProperty(key, value);
@@ -229,9 +307,10 @@ export function ReminderApp({ slots, persistenceStatus, error, onAdd, onEdit, on
     <a className="sb-skip" href="#sb-reminders">Skip to reminders</a>
     <main className="sb-phone" aria-label="Reminders">
       {error && <p className="sb-error" role="alert">{error}</p>}
-      <section id="sb-reminders" className="sb-reminders" aria-label="Your four reminders" tabIndex={-1}><ol className="sb-list">{ordered.map(slot => <ReminderCard key={slot.slotId} slot={slot} onAdd={onAdd} onEdit={onEdit} onComplete={onComplete} onUndo={onUndo} onActivateControl={onActivateControl} />)}</ol></section>
+      <section id="sb-reminders" className="sb-reminders" aria-label="Your four reminders" tabIndex={-1}><ol className="sb-list">{ordered.map(slot => <ReminderCard key={slot.slotId} slot={slot} onAdd={onAdd} onEdit={onEdit} onComplete={onComplete} onUndo={onUndo} onActivateControl={onActivateControl} onConfetti={launchConfetti} />)}</ol></section>
       <span className="sb-sr-only" role="status" aria-live="polite">{persistenceStatus === 'unavailable' ? 'Saving unavailable' : persistenceStatus === 'saving' ? 'Saving' : persistenceStatus === 'saved' ? 'Saved on this device' : 'Your reminders stay in the same order'}</span>
       <p className="sb-feedback sb-sr-only" role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
     </main>
+    <ConfettiLayer bursts={confettiBursts} />
   </div>;
 }
