@@ -1,35 +1,42 @@
 # Tactile Reminders
 
-A desk companion that gives everyday reminders a physical place: four tasks, two dials, two switches, and a small black pixel-art cat.
+**Four reminders. Two dials. Two switches. A small companion to celebrate getting things done.**
 
-Built for **OU SASEHacks 2026 — SASEHACKS FOR GOOD**.
+Tactile Reminders is a desk switchboard concept and a working mobile web app, built for **OU SASEHacks 2026 — SASEHACKS FOR GOOD**. It gives a few important tasks a fixed place and makes completion visible, tangible and encouraging.
 
-## The product idea
+[Try the live demo](https://tactile-reminders-demo-2026.yvan314234.chatgpt.site/) · [Run locally](#getting-started) · [Google Tasks setup](#google-tasks-optional) · [Presentation guide](coordination/demo/JUDGING_PACKAGE.md)
 
-Long reminder lists can be easy to ignore. We want a few important tasks to stay in sight and within reach, with a satisfying physical action to mark each one complete.
+## The idea
 
-Our prototype places a portrait phone on the left of a 3D-printed switchboard, with two dials and two stick switches on the right. Each control belongs to one fixed reminder. The phone demonstrates the display we would eventually build into the product.
+Long task lists and repeated notifications can be easy to tune out. We wanted a small, dedicated reminder board that stays on a desk, with a satisfying physical action associated with each task.
 
-We are exploring tactile routines for people who find conventional reminders difficult, including people with ADHD and people with vision-accessibility needs. Connected controls and a refreshable Braille display are future directions. These benefits need testing with intended users; this prototype does not establish a medical benefit or complete nonvisual accessibility.
+The prototype places a portrait phone on the left of a 3D-printed enclosure, with two dials and two stick switches on the right. Each control corresponds to one reminder. The phone demonstrates a future integrated display.
 
-## What you can do today
+We are exploring this interaction for people who benefit from tactile routines, including people with ADHD and people with vision-accessibility needs. User testing and connected tactile output are future work; the prototype does not establish a clinical benefit.
 
-- Add and edit a reminder in each of four fixed slots.
-- Complete a reminder or undo its completion using the phone interface.
-- Keep reminders after reload in the same browser through localStorage.
-- See a roaming pixel-art cat and brief completion feedback, including confetti. The cat can be hidden; animations respect reduced-motion settings.
-- Import incomplete **Google Tasks due today** into explicitly selected empty slots after configuring Google sign-in.
+**What is physical today:** a printed enclosure and mechanical controls. **What works in software:** reminders, urgency, completion/Undo, saving, companion feedback, a visual Braille mode and a configurable Google Tasks importer. The printed controls are not electronically connected; presenters openly mirror their actions in the app.
 
-The printed switches and dials are **mechanical demo props**. They do not send electronic signals to the app. During the demonstration, we openly mirror a physical action using its on-screen control. The completion circles toggle Complete/Undo; simulated switches respond to horizontal swipes (right completes, left undoes), while keyboard users can use the completion and Undo buttons; the core command intended for future hardware only completes its assigned task and repeated activation is a no-op.
+## Features
 
-| Reminder slot | Physical control |
+| Feature | Current behavior |
 |---|---|
-| 1 | Dial 1 |
-| 2 | Dial 2 |
-| 3 | Switch 1 |
-| 4 | Switch 2 |
+| Four fixed reminders | Add and edit tasks without changing their physical slot order. |
+| Completion and Undo | Tap the completion circle, or swipe a simulated switch right to complete and left to undo. |
+| Urgent tasks | Mark a reminder Urgent in its editor. Pending urgent tasks have a red glow; completion removes the glow and Undo restores it. Urgency survives reload. |
+| Completion feedback | Brief synthesized click audio where supported, cat encouragement, and confetti. Normal tasks use blue/black/white; urgent tasks use red/black/white. |
+| Pixel-art companion | A black cat roams in the portrait layout. Drag it or focus it and use arrow keys; Shift+arrows moves farther. Use Hide cat for an unobstructed view. |
+| English/Braille display | Toggle displayed titles to a Unicode Braille character mapping. Stored titles, editors and accessible title labels remain English. |
+| Local persistence | Task titles, urgency and completion are saved in this browser using localStorage. |
+| Google Tasks import | After OAuth setup, manually import incomplete tasks due today into selected empty slots, with duplicate prevention and read-only Google access. |
+| Reduced motion | The OS/browser preference stops cat movement, urgent pulsing and visible confetti. |
 
-## Try the app
+### Interface preview
+
+![Tactile Reminders showing four sample tasks, an urgent task and a completed task](docs/images/reminder-board.png)
+
+*Browser preview at a 390 × 844 viewport, using sample data. The cat is hidden for clarity; this is not a physical-iPhone test.*
+
+## Getting started
 
 Use **Node.js 22.12+ or Node.js 24**, with npm.
 
@@ -40,54 +47,103 @@ npm ci
 npm run dev -- --port 5173
 ```
 
-Open **http://localhost:5173/**. To try the phone layout, open the network URL printed by Vite on a phone connected to the same Wi-Fi.
+Open **http://localhost:5173/**. For local phone testing, use Vite's printed network URL on the same Wi-Fi. The laptop must keep the server running, and its firewall/network must permit the connection.
 
-1. Add a short task to an empty row.
-2. Tap its completion circle or swipe its simulated switch right.
-3. Use Undo, tap the completion circle again, or swipe the switch left to reopen it.
-4. Edit a task, then reload to see local saving.
+Google configuration is optional; the reminder board works without it.
 
-For Google import, leave a slot empty and scroll below the board to the import launcher.
+### Commands
 
-```sh
-npm test
-npm run build
-```
+| Command | Purpose |
+|---|---|
+| `npm run dev -- --port 5173` | Start the development server, including a LAN preview. |
+| `npm test` | Run reminder, storage, Google API and companion transition tests. |
+| `npm run build` | Type-check and create the production bundle in `dist/`. |
+| `npm run preview` | Preview the production bundle locally after building. |
 
-The tests cover reminder state/storage, import behavior and cat completion transitions. A passing build does not establish live Google authentication or physical-phone accessibility.
+The app is a static Vite frontend and does not require a backend server or database.
 
-## Google Tasks setup
+## Usage
 
-The importer uses Google Identity Services and the read-only Google Tasks API. It needs your own OAuth web client and test-account configuration:
+1. Choose **Add** in an empty row, enter a title and optionally select **Urgent**. Save the reminder.
+2. Complete it by tapping the circle or swiping the right-side simulated switch **right**. A tap on the switch itself intentionally does nothing.
+3. Reopen it by tapping the completed circle, choosing **Undo**, or swiping the switch **left**.
+4. Use the pencil button to edit the title or urgency. **Cancel** or Escape leaves the saved task unchanged.
+5. Use **Braille/English** to change the title display, and **Hide cat/Show cat** to control the companion.
 
-1. Enable the Google Tasks API and configure OAuth consent/test users.
-2. Authorize the exact JavaScript origin, such as `http://localhost:5173`.
-3. Put the public web client ID in an ignored `.env.local` file:
+Keyboard users can Tab to the completion circle and Edit/Undo buttons and activate them with Enter/Space. The swipe switches themselves are pointer/touch controls. The cat also supports arrow-key movement when focused.
+
+New titles and editor saves are limited to **60 characters**. Existing or Google-imported titles up to **200 characters** are preserved. Editing a longer title requires explicitly shortening it; a rejected save retains the draft, and Cancel preserves the original.
+
+Completed reminders remain assigned to their slots. There is no delete, automatic daily reset or task-reordering interface in this prototype. **Leave a slot empty if you plan to demonstrate Google import.**
+
+### Physical mapping
+
+| Slot, top to bottom | Enclosure control |
+|---|---|
+| 1 | Dial 1 |
+| 2 | Dial 2 |
+| 3 | Switch 1 |
+| 4 | Switch 2 |
+
+All four on-screen simulators use the same swipe interaction. The separate core `activateControl` action intended for future hardware is completion-only and idempotent: repeated activation cannot undo a task.
+
+## Google Tasks (optional)
+
+This integration reads **Google Tasks due today**, not Calendar events. It follows all task-list/task pages, compares Google's date-only due value with the device's local calendar date, and excludes completed, deleted and undated tasks.
+
+### Configure your own client
+
+1. Enable **Google Tasks API** in a Google Cloud project.
+2. Configure OAuth consent, the read-only Tasks scope and any required test users.
+3. Create a **Web application** OAuth client. Authorize the exact origin, such as `http://localhost:5173`; add the deployed HTTPS origin separately when using a hosted build.
+4. Create ignored `.env.local` in the repository root:
 
 ```dotenv
 VITE_GOOGLE_CLIENT_ID=YOUR_PUBLIC_WEB_CLIENT_ID.apps.googleusercontent.com
 ```
 
-Restart the dev server, connect Google Tasks, select a task due today and choose an empty slot. See the [Google integration guide](src/integrations/google/README.md) for full setup and verification details.
+5. Restart the dev server. For production, configure the value **before** `npm run build`.
+6. Open **Import Google Tasks**, choose **Connect Google Tasks**, grant read-only access, select a task and an empty slot, then import. Adjust the local title if necessary.
 
-Local reminders work without Google configuration. Live consent/import requires separate verification. Phone sign-in needs a valid HTTPS origin; the HTTP LAN preview is for local reminder testing.
+Plain HTTP LAN phone addresses are not supported Google web OAuth origins. Use a configured localhost origin or an authorized HTTPS hostname.
 
-Import does not overwrite occupied slots or import the same Google task twice. Completing or editing an imported reminder changes the local copy only. Tokens stay in memory; never put a client secret or token in source or Slack.
+Import never silently replaces an occupied reminder. Duplicate checks use task-list ID plus task ID. Editing or completing the imported copy does **not** change Google. Access tokens stay in memory and are cleared by reload or **Clear connection**; that button does not revoke Google-side authorization. Never place a client secret or token in source.
 
-## How it works and current limits
+See the [integration guide](src/integrations/google/README.md) for scope, pagination, error handling and full setup instructions.
 
-React, TypeScript and Vite power the web app. Reminder state and storage live in `src/core`, the interface in `src/ui`, Google import in `src/integrations/google`, and the cat companion in `src/companion`. JetBrains Mono is bundled locally. Cat artwork provenance is in [assets/companion/README.md](assets/companion/README.md).
+## Architecture and data
 
-There is no backend or cross-device synchronization. Each browser/device/origin has its own reminders: importing on laptop localhost does not populate the phone. Simultaneous localStorage writes are not transactional. Connected hardware and tactile Braille output are not implemented; V30 offers a visual Unicode Braille display toggle (not a certified Braille translator); actual phone and screen-reader testing remain separate acceptance work.
+```text
+src/
+  core/                  Reminder actions, validation, persistence and tests
+  ui/                    Portrait layout, gestures, urgency, Braille mapping and effects
+  companion/             Cat component and completion-transition detection
+  integrations/google/   OAuth token flow, read-only API adapter and import dialog
+  App.tsx                Shared state and component integration
+assets/companion/        Cat artwork and generation provenance
+scripts/                 Source-archive handoff helper
+```
 
-## Event and team notes
+Built with **React, TypeScript and Vite**, browser **localStorage**, **Pointer Events**, **Web Audio**, **Google Identity Services** and the **Google Tasks API**. JetBrains Mono is bundled locally.
 
-All project code must be written after the reported **9:00 a.m. CDT, October 24, 2026** hacking start. This repository was created afterward; do not reuse the older pre-event `Jaxonize/sasehacks2026` starter.
+Reminders belong to the current browser, device and origin. A laptop localhost import does not populate the phone or public demo. Same-origin tabs refresh from storage and sequential actions rebase before saving; simultaneous writes are not transactional. When saving is unavailable, the app warns that changes may remain only in the current tab.
 
-Submit the repository link through [OU SASEHacks Devpost](https://ou-sasehacks.devpost.com/) before judging. Be set up and ready with a presentation at **5:15 p.m. in Gallogly Hall, Room 127**. Criteria: theme alignment, technical depth/implementation, and creativity/originality.
+## Prototype limits and verification
 
-**Final submission is on hold until Jaxon explicitly authorizes it.** Commit, push and deployment permissions are separate.
+- Physical controls are simulated; there is no electronic hardware connection or refreshable Braille output.
+- Braille mode is a visual character mapping, not a validated Braille translator. It is not a substitute for tactile output or screen-reader/user testing.
+- The cat can overlap task content; hide or reposition it when needed. Keyboard completion is available through the circle/Undo controls rather than the swipe switch.
+- Audio depends on browser support and playback permission. Braille display and cat visibility reset on reload; reduced motion follows the system/browser preference.
+- There is no cross-device sync, account backend, recurring schedule or reminder notification service.
 
-Contributors and coding agents: read [AGENTS.md](AGENTS.md), [TEAM_COORDINATION.md](TEAM_COORDINATION.md), [HANDOFF.md](HANDOFF.md) and the newest [coordination updates](coordination/updates/) before editing. Coordinate ownership, preserve uncommitted work, and keep credentials out of Git.
+The V30 source audit passed **21 automated tests**, TypeScript checking and the production build. Browser checks covered urgency/reload, completion/Undo/swipes, English accessible titles in Braille mode, legacy-title preservation, Google setup messaging, reduced motion and layouts at 390×844, 375×812 and 419×604. The public demo loads and its Google sign-in SDK becomes ready; **a real account consent/import, physical iPhone keyboard/audio and screen-reader speech were not exercised in this audit**.
 
-V30 adds saved urgency, red pending-card glow, urgency-specific confetti, a draggable cat, and a Braille/English display toggle. New editor saves require at most 60 characters; older and Google-imported titles up to 200 are preserved and must be explicitly shortened when edited.
+See the [final audit](coordination/updates/2026-10-24-1634-codex-final-readme-audit.md) for evidence, remaining issues and presentation guidance.
+
+## Credits and event context
+
+Built during **OU SASEHacks on October 24, 2026**, under the theme **SASEHACKS FOR GOOD**. The black cat was generated during the event; [artwork prompts and provenance](assets/companion/README.md) are included. Third-party packages and the bundled font retain their respective licenses; this repository does not currently declare a project-wide license.
+
+Contributors: read [AGENTS.md](AGENTS.md), [TEAM_COORDINATION.md](TEAM_COORDINATION.md), [HANDOFF.md](HANDOFF.md) and the latest [updates](coordination/updates/) before editing. The [judging package](coordination/demo/JUDGING_PACKAGE.md) contains pitch and walkthrough drafts.
+
+Official submission: [OU SASEHacks Devpost](https://ou-sasehacks.devpost.com/). Be ready with a presentation at **5:15 p.m. CDT in Gallogly Hall, Room 127**. **Final Devpost submission remains on hold until Jaxon explicitly authorizes it.** Source publication does not release that hold.

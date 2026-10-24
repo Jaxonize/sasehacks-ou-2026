@@ -1,0 +1,30 @@
+# Final source and README audit — October 24, 2026, approximately 4:34 p.m. CDT
+
+Agent/harness: Codex desktop, Jaxon's isolated documentation worktree. Direct request: review the final pushed version deeply enough to produce a normal product README supporting presentation preparation. The scheduled Slack automation remains PAUSED. Source reviewed: main `88acbfa8eb927a36124a71f20a2399020a08b4a9` (integrated V30), following documentation commit5950eb2. GitHub compare and fetched Git objects inspected; clean worktree fast-forwarded without resetting/discarding work.
+
+## Independently verified
+
+- Clean lockfile install (`npm ci --ignore-scripts --no-audit --no-fund`), all21 existing tests passing, TypeScript/Vite production build passing on Node24.19.0. New urgency test covers add/edit/complete/Undo/reload and legacy200-character saves. No new app code or test suite added to the repository.
+- Read core types/actions/controller/storage/React hook, full current UI, companion transition logic/styles, Google dialog/token loader/API adapter, configuration and final integration notes. Urgency is optional/validated and preserved without changing the version1 storage key or Google provenance. Core hardware activation remains idempotent completion-only; UI circle and swipe Undo are separate actions.
+- Isolated headless Edge at localhost5186, fresh browser contexts and sample data only: four slots; add+urgent; tap-on-switch no-op; right swipe completion; repeated right swipe no-op; left swipe Undo; keyboard circle completion; urgency/completion reload; visual Braille/English with English accessible title; Google missing-config dialog/Escape; all four sample tasks; Hide/Show; legacy80-character draft retained with explicit60-character validation and Cancel preserving original; no console errors.
+- Layout checks at390x844,375x812,419x604: no horizontal overflow, all simulated switch boxes56x56. This is browser viewport evidence, not actual iPhone/keyboard/safe-area certification.
+- Fresh forced reduced-motion runtime check on V30: cat and urgent card computed animation:none; confetti remains invisible/unanimated and cleans up. This verifies the final source rather than extending earlier V22 results by assumption.
+- Public demo `https://tactile-reminders-demo-2026.yvan314234.chatgpt.site/` independently loaded, four slots and final Braille/Google launchers present. Opening Google dialog without account login reaches an enabled Connect Google Tasks button after SDK load: public OAuth client configuration and SDK readiness now observed. No consent popup/account sign-in or real import was attempted; do not call real Google consent/import verified.
+- Screenshot `docs/images/reminder-board.png` is a fresh browser capture with sample reminders at390x844, reduced motion and cat hidden for clarity. It is not a photograph of hardware or an actual iPhone screenshot. Visually inspected after capture.
+
+## Remaining findings and honest presentation limits
+
+1. **Keyboard semantics issue, nonblocking demo workaround:** simulator elements have role=switch and are focusable, but Space/Enter on the switch itself do not change state. Source has pointer handlers only; actual browser Space result confirmed unchanged. Separate completion circle and Undo buttons work by keyboard. README documents that route; do not claim every switch is keyboard-operable. A future fix can implement switch keyboard semantics while preserving tap no-op; no app patch made in this documentation task.
+2. **Companion obstruction:** the128px draggable sprite has pointer-events:auto and can roam across reminder content. An initial screenshot visibly covered a title. Hide/reposition provides a current workaround; README explicitly says so. No claim the moving art cannot intercept touches.
+3. **Braille is a visual mapping:** source maps basic Latin letters/digits/some punctuation, preserves unsupported characters, and leaves English stored/editor/accessible text. It is not a validated complete transcription engine or tactile output. Avoid certified Grade1/UEB or blind-user-validation claims.
+4. **Two title limits by design:** editor saves60; core/legacy/Google import up to200. Imported long titles can display and persist, but any subsequent editor save requires manual shortening. Browser legacy test confirms no automatic truncation.
+5. **Google verification boundary:** hosted client/SDK now ready, unlike older unconfigured snapshots. Real consent/API import and actual phone audio/keyboard/screen-reader speech remain untested here. Browser fixtures and SDK readiness are not proof of account access.
+6. **Scope limits:** four fixed slots; completed reminders remain occupied; no delete/reset/recurrence/notifications/cloud synchronization. No electronic control connection or tactile Braille output. Simultaneous localStorage writes remain nontransactional. Do not imply measured dopamine/clinical benefits.
+
+## Documentation delivered
+
+Reworked README into overview/live-demo link/features/screenshot/prerequisites/commands/step-by-step usage/physical map/Google setup/architecture/data/limits/verification/credits/license status. Current V30 gestures, urgency, draggable cat, visual Braille and60-versus200 title limits replace old generic descriptions. Updated judging package to the same final behavior and evidence. No invented project-wide license or unverified account success.
+
+Validation: Markdown local-link/image checks, whitespace checks and selected-file secret-pattern inspection. Temporary browser audit scripts/results stay outside Git; no automated tests added that mirror implementation. Temporary localhost server is stopped after checks. This audit is a focused correctness/documentation review, not comprehensive security or accessibility certification.
+
+Next: team rehearse exact accepted build using README; preserve one empty slot for Google import; human verify actual phone and real account flow. Final Devpost submission still requires Jaxon's direct GO. README/docs source publication follows his existing authorization to push this chat's authored changes; it does not authorize deployment or submission.
