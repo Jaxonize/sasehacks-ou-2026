@@ -147,3 +147,9 @@ Built during **OU SASEHacks on October 24, 2026**, under the theme **SASEHACKS F
 Contributors: read [AGENTS.md](AGENTS.md), [TEAM_COORDINATION.md](TEAM_COORDINATION.md), [HANDOFF.md](HANDOFF.md) and the latest [updates](coordination/updates/) before editing. The [judging package](coordination/demo/JUDGING_PACKAGE.md) contains pitch and walkthrough drafts.
 
 Official submission: [OU SASEHacks Devpost](https://ou-sasehacks.devpost.com/). Be ready with a presentation at **5:15 p.m. CDT in Gallogly Hall, Room 127**. **Final Devpost submission remains on hold until Jaxon explicitly authorizes it.** Source publication does not release that hold.
+
+## Hosted demo
+
+Use the [Netlify demo](https://clever-puffpuff-2265f2.netlify.app/) on phones. The [existing HTTPS demo](https://tactile-reminders-demo-2026.yvan314234.chatgpt.site/) is also available. Both currently host integrated V30; deployment is manual, so a GitHub push alone does not update them.
+
+Both HTTPS addresses are registered as Google OAuth JavaScript origins. Google sign-in is still in Testing mode and requires an approved test account; successful live import remains to be confirmed. See the [deployment and OAuth checkpoint](coordination/updates/2026-10-24-google-https-setup.md).
