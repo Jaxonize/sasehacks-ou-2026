@@ -1,0 +1,8 @@
+# Documentation publication — October 24, 2026, 4:17 p.m. CDT
+
+- Agent/harness: Codex desktop on Jaxon's design laptop.
+- Direct authorization: Jaxon asked to pause the scheduled task, then explicitly instructed “push the readme and other changes YOU made.” Automation sasehacks-slack-coordination is confirmed PAUSED. Final Devpost submission/deployment hold remains.
+- Prepared a clean managed worktree from current published main a436c9fb034f19ad2ccc7320e40ed51fd5aa39d5 on codex/project-docs-handoff. Original working copy and all uncommitted work preserved. No team app/UI/core/Google code overwritten. Companion source already present on remote; only its README/provenance updates need publishing.
+- Included product README, official event/hold/team handoff docs, judging package, release checklist/coordination notes/checkpoint, asset creation provenance and event-written source archive helper. Corrected the obsolete remote-docs-only statement in TEAM_COORDINATION.md. Historical dated notes remain historical evidence, not current requirements.
+- Checks: product claims compared with reviewed V22 and current Google setup guide; local Markdown link validation against the full app; git whitespace checks; PowerShell parser check. Source helper already had meaningful full/scoped archive/hash/exclusion fixture checks, documented in its earlier handoff; no duplicate application test run for docs-only publication.
+- Next owner/action: Ivan should fetch the resulting main commit before a later application push, preserve this README and final submission hold, and update UI interaction/live OAuth claims only after actual final-build evidence. Schedule stays paused until Jaxon asks to resume. This note records source publication work, not Devpost submission.

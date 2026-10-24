@@ -2,6 +2,8 @@
 
 Generated for this event project with the built-in image generation tool; one initial generation and one simplification edit. No CLI/API fallback was used. The PNG was copied unchanged into this workspace, preserving alpha.
 
+Created on **October 24, 2026 during OU SASEHacks**, after the team's reported 9:00 a.m. CDT hacking start. The final generated PNG was written at approximately 2:33 p.m. CDT (19:33 UTC); the project copy followed the same afternoon. This is original event-generated artwork, not an asset imported from the pre-event starter. Generation prompts are preserved below.
+
 - File: `midnight-cat-pixel-v1.png`
 - SHA256: `774b1d5fb88133a7d28765dc97ddf1415364889afa88790ebb53183e517af2cd`
 - Actual raster dimensions: 1254x1254, RGBA. Corner alpha values checked: zero.

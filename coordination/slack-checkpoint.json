@@ -1,0 +1,12 @@
+{
+  "updatedAt": "2026-10-24T21:17:00Z",
+  "channel": "C0CCN2V2AQY",
+  "channelCursor": "1792874699.875899",
+  "thread": "1792859624.030009",
+  "threadCursor": "1792876232.223159",
+  "remoteMain": "a436c9fb034f19ad2ccc7320e40ed51fd5aa39d5",
+  "currentNote": "coordination/updates/2026-10-24-1617-codex-docs-publish.md",
+  "state": "Claude reports V22 forcedmotion PASS and publicDevpost fields reviewed; localcat provenance dated; V28 urgency candidate unintegrated; Google/phone pending",
+  "submissionHold": true,
+  "automationStatus": "PAUSED"
+}

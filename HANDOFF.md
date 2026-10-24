@@ -27,4 +27,6 @@ The earlier `Jaxonize/sasehacks2026` repository was prepared before the event an
 3. Add a concise note under `coordination/updates/` describing the status and next owner/action.
 4. Give the next agent this repository and tell it what to read. Only one agent should edit the same working copy at a time.
 
-Organizers will provide submission instructions. The team reports a 5:15 p.m. deadline and judging at Gallogly at 5:15 p.m.; verify announcements with event staff.
+Organizer instructions relayed by Jaxon: submit through https://ou-sasehacks.devpost.com/ with the team's repository link, and be set up and ready at 5:15 p.m. in Gallogly Hall, Room 127. Judges circulate between tables. Have a presentation ready covering the idea, demo and technical work; evaluation includes theme alignment, technical depth/implementation, and creativity/originality.
+
+Jaxon has placed final submission on hold: agents may prepare/review drafts, but must not finalize, publish or submit Devpost without his explicit go-ahead. Passing tests or an automation run do not grant that permission. Follow TEAM_COORDINATION.md and the latest organizer/submission coordination note; preserve the separate commit/push/deployment restrictions.

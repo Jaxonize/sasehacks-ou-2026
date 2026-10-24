@@ -2,7 +2,8 @@
 
 ## Event rules
 
-- The team reports that OU SASEHacks hacking began at 9:00 a.m. on October 24, 2026. All project code must be written after that start time. The submission deadline is 5:15 p.m.; judging is at Gallogly at 5:15 p.m. Follow any official clarification from an organizer.
+- The team reports that OU SASEHacks hacking began at 9:00 a.m. on October 24, 2026. All project code must be written after that start time. Complete submission before judging at 5:15 p.m.; be set up and ready in Gallogly Hall, Room 127 by then. Official portal: https://ou-sasehacks.devpost.com/; include the team's repository link. Follow any official clarification from an organizer.
+- Jaxon explicitly requires a final submission hold: prepare/review drafts freely, but do not finalize, publish or submit Devpost until he directly authorizes the final submission. This is separate from code readiness and from commit/push/deployment permission. Have a presentation ready covering the idea, demo and technical work; judging criteria are theme alignment, technical depth/implementation, and creativity/originality.
 - This repository was created after hacking began and starts with documentation only. The older `Jaxonize/sasehacks2026` repository contains a generic Next.js starter created before hacking began. Do not copy, import, merge, cherry-pick, or otherwise reuse its app/source code or generated scaffold in this event repo.
 - Do not invent product requirements. Read the exact event prompt and agree with the team on a small demo before implementing it.
 - If the rules or use of any pre-existing material is unclear, stop and ask an event organizer before using it.

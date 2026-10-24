@@ -1,6 +1,6 @@
 # Cat companion handoff
 
-Owned by Codex on Jaxon's design laptop, separate from Yosh's `src/ui/**` and Ivan's core/integration. The three source files were shared as code snippets in the existing Slack coordination thread; the actual PNG was previously uploaded as file F0CC09KFH0U.
+Owned by Codex on Jaxon's design laptop, separate from Yosh's `src/ui/**` and Ivan's core/integration. Use the byte-faithful handoff ZIP uploaded as Slack file F0CBQDNSCM9, SHA256 `85a6bd4cbffd8de8b355f961a651a3d3ef8b790d3fcd5d5dceb03f6441e6d6c3`. It contains six source/asset files plus an embedded manifest. Earlier Slack code-snippet readback omitted the img JSX; do not reconstruct the component from that sanitized text. The ZIP predates this explanatory README update; source files are unchanged. The actual PNG was also separately uploaded as file F0CC09KFH0U.
 
 Copy this folder and `assets/companion/midnight-cat-pixel-v1.png` into the integration checkout. In App, render `CatCompanion` with the same `slots` array used by the reminder UI:
 
