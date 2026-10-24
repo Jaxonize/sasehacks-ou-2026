@@ -4,7 +4,7 @@
 
 Tactile Reminders is a desk switchboard concept and a working mobile web app, built for **OU SASEHacks 2026 — SASEHACKS FOR GOOD**. It gives a few important tasks a fixed place and makes completion visible, tangible and encouraging.
 
-[Try the live demo](https://tactile-reminders-demo-2026.yvan314234.chatgpt.site/) · [Run locally](#getting-started) · [Google Tasks setup](#google-tasks-optional) · [Presentation guide](coordination/demo/JUDGING_PACKAGE.md)
+[Try the live demo](https://clever-puffpuff-2265f2.netlify.app) · [Run locally](#getting-started) · [Google Tasks setup](#google-tasks-optional) · [Presentation guide](coordination/demo/JUDGING_PACKAGE.md)
 
 ## The idea
 
@@ -150,6 +150,6 @@ Official submission: [OU SASEHacks Devpost](https://ou-sasehacks.devpost.com/). 
 
 ## Hosted demo
 
-Use the [Netlify demo](https://clever-puffpuff-2265f2.netlify.app/) on phones. The [existing HTTPS demo](https://tactile-reminders-demo-2026.yvan314234.chatgpt.site/) is also available. Both currently host integrated V30; deployment is manual, so a GitHub push alone does not update them.
+Use the [Netlify demo](https://clever-puffpuff-2265f2.netlify.app/) on phones. The [existing HTTPS demo](https://tactile-reminders-demo-2026.yvan314234.chatgpt.site/) is also available. Both currently host integrated V30; deployment is manual, so a GitHub push alone does not update them. The interface is designed primarily for mobile devices, so the layout and interactions may not work as expected on desktop; use a phone for the intended demo experience.
 
 Both HTTPS addresses are registered as Google OAuth JavaScript origins. Google sign-in is still in Testing mode and requires an approved test account; successful live import remains to be confirmed. See the [deployment and OAuth checkpoint](coordination/updates/2026-10-24-google-https-setup.md).
