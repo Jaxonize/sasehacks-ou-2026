@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1000" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0b1b29"/>
+      <stop offset="1" stop-color="#143a54"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0.8">
+      <stop stop-color="#1e526f"/>
+      <stop offset="0.48" stop-color="#3082b0"/>
+      <stop offset="1" stop-color="#55a2c9"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="0.8" y2="1">
+      <stop stop-color="#1b506e"/>
+      <stop offset="0.55" stop-color="#12364e"/>
+      <stop offset="1" stop-color="#0b1b2a"/>
+    </linearGradient>
+    <linearGradient id="foreground" x1="0" y1="0" x2="1" y2="0.8">
+      <stop stop-color="#0d273b"/>
+      <stop offset="0.45" stop-color="#16445e"/>
+      <stop offset="1" stop-color="#081522"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1440v1000H0z"/>
+  <path fill="url(#ribbon)" d="M-100 130C160-40 430 45 660 210S1090 270 1540 490V840C1140 680 1050 470 710 450S210 160-100 440Z"/>
+  <path fill="url(#fold)" d="M-100 440C190 180 410 420 710 450S1140 680 1540 840V1100H-100Z"/>
+  <path fill="url(#foreground)" d="M-100 780C210 555 475 775 780 760S1250 855 1540 1010V1100H-100Z"/>
+</svg>

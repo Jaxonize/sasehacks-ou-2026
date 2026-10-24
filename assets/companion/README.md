@@ -1,0 +1,23 @@
+# Midnight cat companion asset
+
+Generated for this event project with the built-in image generation tool; one initial generation and one simplification edit. No CLI/API fallback was used. The PNG was copied unchanged into this workspace, preserving alpha.
+
+- File: `midnight-cat-pixel-v1.png`
+- SHA256: `774b1d5fb88133a7d28765dc97ddf1415364889afa88790ebb53183e517af2cd`
+- Actual raster dimensions: 1254x1254, RGBA. Corner alpha values checked: zero.
+- Style: midnight-black pixel-art cat with cyan eyes and a curled tail. It is a generated high-resolution pixel-art PNG, not a validated native 24x24 indexed-color sprite sheet. The requested grid/palette are art direction, not a measured output guarantee.
+- Shared to the existing coordination Slack thread with Jaxon's explicit destination/comment approval: file F0CC09KFH0U.
+
+## UI handoff
+
+Codex subsequently implemented the standalone consumer in `src/companion/**` to unblock delivery; Yosh retains the existing `src/ui/**`, and Ivan owns App integration. Copy the file to the identical `assets/companion/` path in the integration checkout. The component imports it as `../../assets/companion/midnight-cat-pixel-v1.png`. Use a small contained image with `image-rendering: pixelated`; preserve its transparency. Review the actual small-size silhouette against the charcoal UI before finalizing. See `src/companion/README.md` for the current handoff.
+
+Keep the dock outside reminder hit areas and enclosure row alignment. A new false-to-true completion may trigger one short celebratory motion and encouragement. Initial load and repeated activation of an already-completed task must not trigger new completion rewards. Respect reduced motion; allow hiding the companion. No feeding/hunger, punishment, points economy or external pet service is part of the requested scope. Coordinate placement with Ivan's Google Tasks launcher. Preserve the current reliability, keyboard-focus and hit-area fixes.
+
+## Initial generation prompt
+
+Use case: stylized-concept. Asset type: a production-ready transparent pixel-art game sprite for a small task-companion widget. Primary request: ONE midnight-black 8-bit cat, full body, sitting calmly facing slightly three-quarter toward the viewer, with a compact curled tail and alert ears. Authentic restrained late-1980s console pixel art: design the complete sprite on a consistent 32 by 32 logical pixel grid, enlarge with nearest-neighbor square pixels, clean deliberate pixel clusters, stepped one-pixel silhouettes, no anti-aliasing. Six-color maximum palette plus transparency: almost-black outline, midnight-black body, two dark charcoal/navy shades for a readable silhouette on a dark app, tiny ice-blue pixel eyes, one subtle light-blue highlight. Cute expressive cat recognizable at tiny size, simple anatomy, balanced and carefully hand-placed-looking pixels. Full character and tail entirely inside the canvas with generous transparent padding. Background genuinely transparent, no floor, no shadow, no scene, no checkerboard baked in. Render only one sprite, no sheet, no UI, no words, no watermark. Avoid gradients, glows, fur texture, noise, glossy rendering, painterly illustration, 3D, smooth curves, vector art, oversized anime eyes, accessories, extra limbs or inconsistent pixel sizes.
+
+## Simplification edit prompt
+
+Redraw the attached black cat as a VERY LOW RESOLUTION authentic 8-bit console sprite. This is a substantial simplification, not a filter. Use a strict 24 by 24 logical pixel grid, scaled up with nearest-neighbor so each logical pixel is one large identical square. Maximum SIX completely flat solid colors including black, midnight navy, charcoal, muted blue and pale cyan eyes, plus transparent background. No intermediate shades, NO gradient within any pixel or across a cluster, NO antialiasing, NO glossy highlights. Cat anatomy must use only a few bold intentional blocks: triangular stepped ears, compact square-ish head, tiny two-pixel cyan eyes with one black pupil each, sitting rounded-stepped body, short front paws and one curled tail. Keep the whole sprite approximately 20 pixels tall within the 24-pixel cell. The result should look like a skilled pixel artist manually placed about 150 chunky pixels for a small original NES-era game mascot. Flat 2D front three-quarter view, friendly calm expression. Transparent empty canvas, not black background. One cat only. No floor, no shadow, no glow, no text, no scene, no accessories. Prefer an iconic readable tiny silhouette over detail. Preserve midnight-black fur and subtle blue palette from the reference, but remove the large shiny anime eyes and ALL painted texture.

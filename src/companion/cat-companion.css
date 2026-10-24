@@ -1,0 +1,12 @@
+.cat-companion { box-sizing:border-box; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; width:min(100%,400px); padding:10px 12px; border:1px solid #53728c; border-radius:18px; background:#101d2b; color:#e9f4ff; font:14px/1.4 system-ui,sans-serif; }
+.cat-companion *, .cat-companion *::before, .cat-companion *::after { box-sizing:border-box; }
+.cat-companion__content { display:flex; align-items:center; gap:10px; flex:1 1 180px; min-width:0; }
+.cat-companion__content[hidden] { display:none; }
+.cat-companion__sprite { display:block; flex:0 0 64px; width:64px; height:64px; object-fit:contain; image-rendering:pixelated; user-select:none; }
+.cat-companion__message { margin:0; max-width:24ch; overflow-wrap:anywhere; }
+.cat-companion__toggle { min-width:76px; min-height:44px; padding:8px 12px; border:1px solid #749bb9; border-radius:12px; background:#1a3247; color:#d9f2ff; font:inherit; cursor:pointer; }
+.cat-companion__toggle:hover { background:#25455f; }
+.cat-companion__toggle:focus-visible { outline:3px solid #c1e5ff; outline-offset:3px; }
+.cat-companion--celebrating .cat-companion__sprite { animation:cat-companion-hop 550ms steps(4,end) 2; }
+@keyframes cat-companion-hop { 0%,100% { transform:translateY(0); } 40% { transform:translateY(-7px); } 70% { transform:translateY(-2px); } }
+@media (prefers-reduced-motion:reduce) { .cat-companion *, .cat-companion *::before, .cat-companion *::after { animation:none!important; transition:none!important; } }

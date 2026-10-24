@@ -27,3 +27,27 @@ Read `AGENTS.md`, `TEAM_COORDINATION.md`, and `HANDOFF.md` before making changes
 Use the team's Slack channel for live coordination if your agent has its own authorized Slack connection. Record decisions and handoffs in `coordination/updates/` so people on other laptops can catch up. Keep credentials in local ignored environment files, never in Git or Slack.
 
 Anyone can read or clone this public repo. Pushing to it requires GitHub write access.
+
+## Run the V21 app
+
+Requires a current Node.js release supporting TypeScript type stripping.
+
+```sh
+npm ci
+npm run dev -- --port 5173
+```
+
+Open http://localhost:5173/. On the same Wi-Fi, use the network URL printed by
+Vite. Four reminder slots persist in this browser. The on-screen circles and
+simulated controls toggle completion/Undo; no physical hardware is connected.
+The cat can be hidden and respects reduced motion.
+
+```sh
+npm test
+npm run build
+```
+
+Google Tasks is optional and requires an OAuth web client configuration; see
+src/integrations/google/README.md and .env.example. Without configuration the
+app explains that import is unavailable. Never commit credentials. Live Google
+sign-in/import and actual iPhone acceptance remain separate verification steps.
